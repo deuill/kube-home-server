@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Prepare configuration files for environment variable substitution.
+for file in /etc/postfix/*.template; do
+	envsubst "`env | awk -F'=' '{printf "$%s ", $1}'`" < "$file" > "`dirname $file`/`basename $file .template`"
+done
+
+# Generate local aliases.
+postalias /etc/postfix/aliases
+
+# Create required user and group.
+addgroup -S -g 5000 virtual
+adduser -S -u 5000 -G virtual -h /var/mail/virtual virtual
+
+# Run master daemon for Postfix.
+/usr/lib/postfix/master -c /etc/postfix -d

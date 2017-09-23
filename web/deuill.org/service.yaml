@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: deuill-org
+  namespace: web
+spec:
+  selector:
+    app: deuill-org
+  ports:
+    - name: http
+      port: 80
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: deuill-org
+  namespace: web
+data:
+  deuill.org: |
+    server {
+      listen 80;
+      server_name deuill.org;
+      root /srv/http/deuill;
+
+      include conf/basic.conf;
+      include conf/site/generic.conf;
+    }
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: deuill-org
+  namespace: web
+spec:
+  template:
+    metadata:
+      labels:
+        app: deuill-org
+    spec:
+      initContainers:
+        - name: git
+          image: docker.deuill.org/default/git-fetch
+          imagePullPolicy: Never
+          env:
+            - name: GIT_REPOSITORY
+              value: git@deuill.org:deuill.git
+            - name: GIT_REVISION
+              value: bae62c859ab5915d19602e88f098e69605dd9859
+            - name: GIT_ROOT
+              value: /git/deuill
+          volumeMounts:
+            - name: ssh-key
+              mountPath: /root/.ssh
+            - name: deuill-org-source
+              mountPath: /git
+        - name: hugo
+          image: docker.deuill.org/default/hugo
+          imagePullPolicy: Never
+          env:
+            - name: HUGO_SOURCE
+              value: /hugo/source/deuill
+          volumeMounts:
+            - name: deuill-org-source
+              mountPath: /hugo/source
+            - name: deuill-org-build
+              mountPath: /hugo/build
+      containers:
+        - name: nginx
+          image: docker.deuill.org/web/nginx
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: deuill-org-build
+              mountPath: /srv/http/deuill
+            - name: deuill-org-config
+              mountPath: /etc/nginx/sites-enabled
+      volumes:
+        - name: deuill-org-source
+          emptyDir: {}
+        - name: deuill-org-build
+          emptyDir: {}
+        - name: deuill-org-config
+          configMap:
+            name: deuill
+        - name: ssh-key
+          secret:
+            secretName: ssh-key
+            defaultMode: 256

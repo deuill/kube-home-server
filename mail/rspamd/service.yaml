@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rspamd
+  namespace: mail
+spec:
+  selector:
+    app: rspamd
+  ports:
+    - name: milter
+      port: 11332
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: rspamd
+  namespace: mail
+spec:
+  template:
+    metadata:
+      labels:
+        app: rspamd
+    spec:
+      securityContext:
+        # Mount volumes as `_rspamd` user and group.
+        fsGroup: 101
+      containers:
+        - name: rspamd
+          image: docker.deuill.org/mail/rspamd
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 11332
+            - containerPort: 11333
+            - containerPort: 11334
+          volumeMounts:
+            - name: dkim
+              mountPath: /var/lib/rspamd/dkim
+      volumes:
+        - name: dkim
+          secret:
+            secretName: dkim-keys
+            defaultMode: 0640

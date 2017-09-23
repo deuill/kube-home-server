@@ -1,0 +1,4 @@
+#!/bin/sh
+# Run hugo and expand environment variables.
+hugo `eval echo $@`
+exit 0

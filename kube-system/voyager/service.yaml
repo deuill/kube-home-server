@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: voyager-operator
+  namespace: kube-system
+  labels:
+    app: voyager
+spec:
+  ports:
+    - name: http
+      port: 56790
+      targetPort: http
+    - name: acme
+      port: 56791
+      targetPort: acme
+  selector:
+    app: voyager
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: voyager-operator
+  namespace: kube-system
+  labels:
+    app: voyager
+spec:
+  template:
+    metadata:
+      labels:
+        app: voyager
+      annotations:
+        scheduler.alpha.kubernetes.io/critical-pod: ''
+    spec:
+      containers:
+        - name: voyager
+          image: docker.deuill.org/kube-system/voyager
+          imagePullPolicy: Never
+          args:
+            - run
+            - --v=3
+            - --cloud-provider=minikube
+            - --ingress-class=voyager
+            - --analytics=false
+          ports:
+            - containerPort: 56790
+              name: http
+              protocol: TCP
+            - containerPort: 56791
+              name: acme
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/kubernetes
+              name: cloudconfig
+              readOnly: true
+      volumes:
+        - name: cloudconfig
+          hostPath:
+            path: /etc/kubernetes
+      tolerations:
+        - key: CriticalAddonsOnly
+          operator: Exists

@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mail
+  namespace: web
+spec:
+  selector:
+    app: mail
+  ports:
+    - name: http
+      port: 80
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mail-site-config
+  namespace: web
+data:
+  mail.deuill.org: |
+    server {
+      listen 80;
+      server_name mail.deuill.org;
+      root /srv/http/roundcube;
+
+      include conf/basic.conf;
+      include conf/site/generic.conf;
+    }
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mail
+  namespace: web
+spec:
+  template:
+    metadata:
+      labels:
+        app: mail
+    spec:
+      initContainers:
+        - name: git
+          image: docker.deuill.org/default/git
+          imagePullPolicy: Never
+          env:
+            - name: GIT_REPOSITORY
+              value: https://github.com/roundcube/roundcubemail.git
+            - name: GIT_REVISION
+              value: b6132b2bcd69e648f74677b741e4dfbfe7bb77cc
+            - name: GIT_ROOT
+              value: /git/roundcube
+          volumeMounts:
+            - name: roundcube-source
+              mountPath: /git
+      containers:
+        - name: nginx
+          image: docker.deuill.org/web/nginx
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: roundcube-source
+              mountPath: /srv/http/roundcube
+            - name: mail-site-config
+              mountPath: /etc/nginx/sites-enabled
+      volumes:
+        - name: roundcube-source
+          emptyDir: {}
+        - name: mail-site-config
+          configMap:
+            name: mail-site-config

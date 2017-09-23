@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mariadb-secret
+type: Opaque
+data:
+  MYSQL_ROOT_PASSWORD: $((secret-from-gpg) <<< "
+    -----BEGIN PGP MESSAGE-----
+
+    hQIMAzy6/E8lNkAOARAAvcoebUJcMtrahU0xTykh+nVwFvOGuFQbeaR62+4hXMP2
+    xzrl122SM+OxySLa7xS0ephzl5Esp8oBi2QMiVohqQfproQGB/Mz7A1GOGQxGpA/
+    /dU5/QyUM8E+Hpnu36aU7Lg+HZelbnznsLAt62K8RCbw1DbDmM5xVOvrSL4N7Erk
+    +rEiKelOwkuUfwl+3A3J4oM7Z1L+NnP/gEig183HRNUjFlJPUt2/vjoJSDOipkCG
+    1JyT5fuZ/WbIKGT2JQuPMgzejs+zQ3eKBAZ01iJ/IiTg17aX7B81yABvIocdDMU5
+    DgFjNBv7eEPgAyFyiX97BZPrgVtYHcA3l5713nlljFPZf54G4Rb78CQ1/IHffVpm
+    430HcYZelrtnCzAwNzTn04Z+xTzyTTKccjyUqgp8n71rSw7mo2slYp1FBhgSwruo
+    ZRvVN3TkLHed8tfXMkvzYSS/5x0HHnuQtlABzBG2zPjj6vhLv+G5OPi8ZagMfrjZ
+    hxU2R43EE+Etcf+IZYyRL5tRf+MzPFZ+sur40bVqgzPpDOyKew2+ncDCMy+6Vxgg
+    iEK4ovIPmSkmNJYnpbex40KE1MYmCu8VslVbq+/wKmWUKkhXAsPX6nxDOEjSs7Pu
+    BEpDTiXSMyQ0gEtt6P6ehiCsMG9RGIza6J5x48mb4tj7ns7d0gnV3tMCLXA8s5bS
+    eAEVQBQ6KP6PJWanGJYhCDBwBiqI8YF/hxQTa4d7yTFxGcxaD0huwZMKoKxQ8OZI
+    OR9mcXI1aEYv9PK2fdnS22t2t7YEKTesN572tiksS+ctnxQ1SwzSCbr5SO9qWUWy
+    FbbWu9EmeZxGdEXteNaz4ZgfAAF8ApsUZw==
+    =wFOM
+    -----END PGP MESSAGE-----")

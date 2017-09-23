@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dkim-keys
+  namespace: mail
+type: Opaque
+data:
+  deuill.org.dkim.key: $((secret-from-gpg) <<< "
+    -----BEGIN PGP MESSAGE-----
+
+    hQIMAzy6/E8lNkAOAQ/9FbrSpRfbdWmStOv955BD/p3YgoojvzBN5XhiPc9ixtli
+    RNyW5TNGmFUthw/aMSMcTcnXrTydFTXvOcmVNVIo6Cym/O/MdqbtqJTbWM7g5op2
+    k77Hbg+7GXqignsncbDL9u0pgIQZ7G0BehXWdqq9jCmjE30BapWZPqaw7z6dZn3c
+    EGpIwB3LjHJIbMnmvrIEPSR100QyS8UQ5+ftYnNpbDSW6D2CKTx0twj/3FOPaPW9
+    BrQ8wCoWva7P84gr1uVWNCJ7WJ5/d3fQO+EPVyMaWyg6rA0PMD3wv9mU/3JgrrPo
+    7jlunR8tmHFBZq77TzP/17Tlr2aSvASEgLQzZjsNmBYiE/KjaB7huyogmBDOlQZN
+    5EJS/DVvfIEr8mtZBJqjwYxsua1phzGMxiGvJHl9fyMmvt8WcMyjezspPMyl6Dsk
+    8+4XQ78WGTEEg8ENmESsEATbAhu9E/KXPEF1Fob6NywQxdjRa3JlIZFxqHJvETMj
+    c83cZfqCmmDws7WuO2aOUKl9d3OS1E/iXMEIfJnlIhwPmIY5MoIZ060ju+utmEsO
+    mWvdTA4duuEnG9u+Fczzg7xx6EgVxbl5UYldMegC0L21z8zGvWLRGWUeCC5/3h6f
+    u51plw19EiyETksqWlFzZ0Y5wTboIqu9uj4bBgQ2fhFm2T2k7a6q6e7AsXKjUH7S
+    6QHaSM2zPsXf/1JRiX4nfWr2ZO7YYQJroOCQbL4C2ip8/syUXWil6dqlYFon5D6g
+    d3O60M3M6LpbP6ORBdxGu9ihPjuQ6Orz5/swdd1oH4IQMdryKBIIKNuVvcHQ+atH
+    9jO1tL+reojjYDBUBJzhATfZVOkjX7oAyLgUVycVCvnaKALAOimr9cMmXbmopQ/4
+    wzCPxnYJoym2fAhHpDoRw1rTEgDKjOdB50TVXXcfB83AyzC4EJNeqByli7yISvz2
+    F54uXfLpDmuDsnpgUVRxf3knkXqhFNhFpqKche6YjZlSnaMvVafqo2u/Z3GNML4p
+    oRCHbRw7Pucf0Ba+BuzxjdPM2kXwY3BLVtnmNF8S0dHbc6ilk2UwDQ+vDBTj5H1g
+    RLbKraylVT5XSXXf94puPmlWTAscfjQUd+hPrPcFGwLzODhkD3s6jj6PXdmls/lk
+    MmmrQvMoTxfouy62A0nwfju9u7IX3PR8g1ULsq4VQhkiEx1Y8Zmqy6NS0OhlCgrR
+    +QgaKkPEp5bsmrKSIo2WGO6I2U5d0EcBYh405MPFhR5EcujU6HmcxGajFkRHLkgt
+    DWsm6A15E11bAI/sCdzG6p+tb6Chli5IWcMG21BU/maI6mIqbi9dSIj2kJHefquK
+    M5wN/RebXTpxPc2U5XUJ9UfSEtpUZhie+UQZkYwB0X2QwDqutgx6CRMRq9orcfur
+    VS9xyedkXNce8UIA2vaHGp1Igq5L+c4OMLgkpozigcEeWipGlyUdQGQ3e+/0WOTz
+    1BfPX1yfieGVZ8fCAyn8oc9XGzwQtA3LtbXVsubtfhBvw/ciw532qXX1qPy/IYuq
+    J8oc+jSlvuqXzKItfut8neOW1efp5WPWInlSXVzkpi2Q5NkWfGvylPqgXUN72+aT
+    cMRloXVNnPlfDyddKTRJ1vCCBi6TCfYwzgMi+DBPqHHJwON7pm+sIFkHlxQGyB3b
+    DAuJE1RuzgRoFX/7dIbOonqV5c2qNG5UDR3ZzyFrgjLnWa9vG3C9iM6m9m+f
+    =XwNS
+    -----END PGP MESSAGE-----")

@@ -1,0 +1,9 @@
+hosts = ${DATABASE_HOST}
+user = ${DATABASE_USER}
+password = ${DATABASE_PASSWORD}
+dbname = ${DATABASE_NAME}
+table = domains
+select_field = domain
+where_field = domain
+hosts = 127.0.0.1
+additional_conditions = AND enabled = 1

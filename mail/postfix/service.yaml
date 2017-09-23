@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postfix
+  namespace: mail
+spec:
+  selector:
+    app: postfix
+  ports:
+    - name: smtp
+      port: 25
+    - name: submission
+      port: 587
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: postfix
+  namespace: mail
+spec:
+  template:
+    metadata:
+      labels:
+        app: postfix
+    spec:
+      containers:
+        - name: postfix
+          image: docker.deuill.org/mail/postfix
+          imagePullPolicy: Never
+          env:
+            - name: MAIL_HOSTNAME
+              value: mail.deuill.org
+            - name: MAIL_SASL_PATH
+              value: inet:dovecot.mail.svc.cluster.local:3659
+            - name: MAIL_MILTER_PATH
+              value: inet:rspamd.mail.svc.cluster.local:11332
+            - name: DATABASE_HOST
+              value: mariadb.default.svc.cluster.local
+            - name: DATABASE_USER
+              value: mail
+            - name: DATABASE_NAME
+              value: mail
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mail-database
+                  key: password
+          ports:
+            - containerPort: 25
+            - containerPort: 587
+          volumeMounts:
+            - name: mail
+              mountPath: /var/mail
+      volumes:
+        - name: mail
+          hostPath:
+            path: /opt/kubernetes/mail/shared

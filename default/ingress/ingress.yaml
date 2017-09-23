@@ -1,0 +1,45 @@
+apiVersion: voyager.appscode.com/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: default
+  labels:
+    app: voyager
+  annotations:
+    kubernetes.io/ingress.class: voyager
+    ingress.appscode.com/type: HostPort
+spec:
+  rules:
+    # Websites and other web-facing services.
+    - host: deuill.org
+      http:
+        paths:
+          - backend:
+              serviceName: deuill-org.web
+              servicePort: 80
+    # Mail-related services.
+    - host: mail.deuill.org
+      tcp:
+        port: 25
+        backend:
+          serviceName: postfix.mail
+          servicePort: 25
+    - host: mail.deuill.org
+      tcp:
+        port: 587
+        backend:
+          serviceName: postfix.mail
+          servicePort: 587
+    - host: mail.deuill.org
+      tcp:
+        port: 143
+        backend:
+          serviceName: dovecot.mail
+          servicePort: 143
+    # Other services.
+    - host: git.deuill.org
+      tcp:
+        port: 468
+        backend:
+          serviceName: git-server.default
+          servicePort: 22

@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb
+spec:
+  selector:
+    app: mariadb
+  ports:
+    - name: tcp
+      port: 3306
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mariadb
+spec:
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+        - name: mariadb
+          image: docker.deuill.org/default/mariadb
+          imagePullPolicy: Never
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-secret
+                  key: MYSQL_ROOT_PASSWORD
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mariadb
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mariadb
+          hostPath:
+            path: /opt/kubernetes/default/mariadb

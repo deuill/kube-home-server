@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# Prepare configuration files for environment variable substitution.
+for file in /etc/dovecot/*.template; do
+	envsubst "`env | awk -F'=' '{printf "$%s ", $1}'`" < "$file" > "`dirname $file`/`basename $file .template`"
+done
+
+# Compile Sieve scripts.
+for file in /var/lib/dovecot/sieve/*.sieve; do
+	sievec "$file"
+done
+
+# Create required user and group.
+addgroup -S -g 5000 virtual
+adduser -S -u 5000 -G virtual -h /var/mail/virtual virtual
+
+# Run Dovecot daemon.
+/usr/sbin/dovecot -F

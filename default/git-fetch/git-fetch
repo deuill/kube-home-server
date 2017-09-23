@@ -1,0 +1,24 @@
+#!/bin/bash
+# Clone a remote Git repository.
+
+set -xe
+
+# Validate required values.
+if [[ -z "${GIT_REPOSITORY}" ]]; then
+	echo "No repository to clone from, please set GIT_REPOSITORY environment variable."
+	exit 1
+fi
+
+GIT_ROOT="${GIT_ROOT:-/git/$(basename ${GIT_REPOSITORY} .git)}"
+GIT_BRANCH="${GIT_BRANCH:-master}"
+GIT_REVISION="${GIT_REVISION:-HEAD}"
+
+# Clone repository if none already exists.
+if [[ ! -d "${GIT_ROOT}/.git" ]]; then
+	git clone --no-checkout -b "${GIT_BRANCH}" "${GIT_REPOSITORY}" "${GIT_ROOT}"
+fi
+
+cd "${GIT_ROOT}"
+
+git fetch --tags origin "${GIT_BRANCH}"
+git reset --hard "${GIT_REVISION}"

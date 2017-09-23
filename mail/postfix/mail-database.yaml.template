@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mail-database
+  namespace: mail
+type: Opaque
+data:
+  password: $((secret-from-gpg) <<< "
+    -----BEGIN PGP MESSAGE-----
+
+    hQIMAzy6/E8lNkAOARAAp2MqfGBReOMA1HsUXkd9sZ9/o78RepLgZA/eYXA/UWF3
+    CBR5dVsojHX/JW5943N2jcLlVoGOAW9UKP3NsBp1VsLrD5Z4N1KKI4vTskhQ4Rql
+    TDY1Yx5sSe0VSNCK/dn6oLcgh9wcxPN8TTZR1JvRPO/igHYDc3uN8uQWeS3K2yVS
+    X8uA9R0VkdjDzQcuZjih47ZQtZUIiRDaZO6skmzJTzaCu9TWPObXIZq44cOADYkC
+    c5khCkmdVns1NbVawX+xmir9t0BKH3GXL+9f7QX2wGVWQRYAOSUw229zZaNaODNv
+    lA3BBHCfRkB0vCZcRTeaSiaJ6Vf0a4DWGkdMmTA+zRlIhMjKTKoBHusANZwaEwvA
+    bpM8y6v/jkAVBLySrMzkQlmMy16Y/m5IX1/ta3/VvOM4h2D18BEJvFsOAqFgffN3
+    djwycVoHOB+Nv+y2RL90bTOl+d2Xo1Xn6G2KnG14wygrsXVsPFEwU4KPvvezZA6w
+    nNintjX8gH2wydElSCigW+N7KitMHLNN8NtYy15EPUXtDX0usT/4VoTyG7ROTM1y
+    UYcZE6ZmYyWpasJMqNbMfWQtldclwpToXqSa4zO01DhZTz0yg7AnY47q1RlGXF91
+    HSifau1K90SUWlinloyjNpxasxSlqlwnlZ81jbc90vNnOEJKtNck6MwszRVZNfnS
+    dwExM5q6jgsiw7Ya/NuZARQv7BPrH8PUInHGG1cgf+ZAP9m31WzqtiIByxYLdAhO
+    fCwHWl8hoTUJeHD1wi3uk7dcB9KYK2r0REu1XmkqKonJ2ySpZqCAOzzUwv9BSKfB
+    nfm30dkAN4DnDSWVf1gKpi3iwJlRPqwd
+    =PirY
+    -----END PGP MESSAGE-----")

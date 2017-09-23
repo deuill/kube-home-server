@@ -1,0 +1,9 @@
+hosts = ${DATABASE_HOST}
+user = ${DATABASE_USER}
+password = ${DATABASE_PASSWORD}
+dbname = ${DATABASE_NAME}
+table = users
+select_field = maildir
+where_field = username
+hosts = 127.0.0.1
+additional_conditions = AND enabled = 1

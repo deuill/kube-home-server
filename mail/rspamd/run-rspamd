@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Create base directories.
+mkdir -m 755 -p /run/rspamd
+chown _rspamd:_rspamd /run/rspamd
+
+# Run rspamd in the foreground.
+/usr/bin/rspamd -f -u _rspamd -g _rspamd

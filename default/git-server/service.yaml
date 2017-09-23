@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: git-server
+spec:
+  selector:
+    app: git-server
+  ports:
+    - name: ssh
+      port: 22
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: git-server
+spec:
+  template:
+    metadata:
+      labels:
+        app: git-server
+    spec:
+      containers:
+        - name: git-server
+          image: docker.deuill.org/default/git-server
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 22
+          volumeMounts:
+            - name: git
+              mountPath: /home/git
+            - name: ssh
+              mountPath: /home/git/.ssh
+      volumes:
+        - name: git
+          hostPath:
+            path: /opt/kubernetes/default/git
+        - name: ssh
+          secret:
+            secretName: git-server-ssh
+            defaultMode: 256

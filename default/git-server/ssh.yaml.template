@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: git-server-ssh
+type: Opaque
+data:
+  authorized_keys: $((secret-from-gpg) <<< "
+    -----BEGIN PGP MESSAGE-----
+
+    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
+    R0TSaVIsdPg+JOxsYf8=
+    =H9gr
+    -----END PGP MESSAGE-----")
