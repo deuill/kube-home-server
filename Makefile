@@ -1,22 +1,22 @@
 # Makefile for Kubernetes Cluster
 # Run `make help` for additional information.
 
-# The base Docker registry address, used for all images.
-DOCKER_REGISTRY = "docker.deuill.org"
+# Build dependency graph.
+include Makefile.depends
 
 # The Bash environment to include with templates.
-TEMPLATE_ENV = "$(ROOT_DIR)/Makefile.template.env"
+TEMPLATE_ENV = $(ROOT_DIR)/.template.env
+
+# The base Docker registry address, used for all images.
+DOCKER_REGISTRY = docker.deuill.org
 
 # -------------
 # Public rules.
 # -------------
 
-IMAGES = $(wildcard */*/Dockerfile)
-DEFINITIONS = $(wildcard */*/*.yaml */*.yaml)
-TEMPLATES = $(wildcard */*/*.yaml.template */*.yaml.template)
-
-## Build all available Docker images.
-images: $(IMAGES)
+IMAGES      = $(shell find $(ROOT_DIR) -name Dockerfile)
+DEFINITIONS = $(shell find $(ROOT_DIR) -name *.yaml)
+TEMPLATES   = $(shell find $(ROOT_DIR) -name *.yaml.template)
 
 ## Show usage information for this Makefile.
 help:
@@ -31,23 +31,39 @@ help:
 # Private rules.
 # --------------
 
-$(IMAGES):
+$(IMAGES): % : .build/%.t
 	@echo "Building Docker image for $(BOLD)$(@D)$(RESET)..."
 	@sudo docker build -t $(DOCKER_REGISTRY)/$(@D) $(@D)
+	@mkdir -p .build/$(@D) && touch -r $@ $<
 
-$(DEFINITIONS):
+$(DEFINITIONS): % : .build/%.t
 	@echo "Building definition for $(BOLD)$(@)$(RESET)..."
 	@kubectl apply -f $@
+	@mkdir -p .build/$(@D) && touch -r $@ $<
 
-$(TEMPLATES):
+$(TEMPLATES): % : .build/%.t
 	@echo "Building definition from template $(BOLD)$(@)$(RESET)..."
 	@bash -c 'bash <(printf "source $(TEMPLATE_ENV) && cat << __MAKE__\n$$(cat $@)\n__MAKE__\n")' | kubectl apply -f -
+	@mkdir -p .build/$(@D) && touch -r $@ $<
 
 # ----------------
 # Other directives.
 # ----------------
 
-.PHONY: $(IMAGES) $(DEFINITIONS) $(TEMPLATES) images help
+.PHONY: help
+
+# Create or update build tracking files, if needed. Each recipe checks against these files as
+# prerequisites, and determines whether the recipe commands need to be executed based on their status.
+ifeq ($(FORCE),true)
+    $(foreach i,$(MAKECMDGOALS),$(shell rm -f .build/$(i).t))
+endif
+
+$(foreach i,$(MAKECMDGOALS), \
+$(shell mkdir -p .build/`dirname $(i)`; \
+        test $(i) -nt .build/$(i).t && touch .build/$(i).t))
+
+# Empty recipe target for build tracker files.
+.build/%.t:;
 
 # Make `help` be the default action when no arguments are passed to `make`.
 .DEFAULT_GOAL = help

@@ -1,0 +1,16 @@
+# Dependency graph for Kubernetes build system.
+#
+# Rules placed in here will be parsed alongside the main build file. However, this file is intended
+# for keeping rules for specific build targets, especially rules related to specifying prerequisites.
+#
+# For instance, a sample service may come with a `Dockerfile`, and a `service.yaml` file, the latter
+# of which depends on the former. The following definitions will allow for building these in order
+# at all times:
+#
+# 	default/example-service/service.yaml: | default/example-service/Dockerfile
+#
+# Note the use of order-only prerequisites (using the pipe symbol -- `|`), as normal prerequisites
+# will lead to rebuilding the `service.yaml` definition if ANY of the prerequisite files are newer.
+
+default/git-server/service.yaml: | default/git-server/Dockerfile
+default/git-server/service.yaml: | default/git-server/templates/ssh.yaml.template
