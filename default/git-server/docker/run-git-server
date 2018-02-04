@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Create required user and group.
+addgroup --system --gid 500 git
+adduser --system --uid 500 --gid 500 --shell /usr/bin/git-shell --home /home/git git
+
+# Correct permissions where needed.
+chown -R git:git /home/git
+chmod -R u+rwX,go-rwxX /home/git/.ssh
+
+# Run SSH daemon.
+/usr/sbin/sshd -D -e
