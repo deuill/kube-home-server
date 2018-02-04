@@ -2,11 +2,10 @@ apiVersion: voyager.appscode.com/v1beta1
 kind: Ingress
 metadata:
   name: ingress
-  namespace: default
+  namespace: kube-system
   labels:
     app: voyager
   annotations:
-    kubernetes.io/ingress.class: voyager
     ingress.appscode.com/type: HostPort
 spec:
   rules:
