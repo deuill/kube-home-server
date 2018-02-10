@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: acme-account
+  namespace: kube-system
+type: Opaque
+data:
+  ACME_EMAIL: $(secret-from-string <<< "${ADMIN_EMAIL}")

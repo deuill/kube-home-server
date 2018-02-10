@@ -4,7 +4,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/latest-stable/main" >> /etc/apk/r
     apk upgrade --no-cache --update
 
 RUN rm -rf /etc/nginx
-COPY conf /etc/nginx
+COPY docker/conf /etc/nginx
 RUN nginx -t
 
 EXPOSE 80

@@ -32,19 +32,20 @@ help:
 # --------------
 
 $(IMAGES): % : .build/%.t
-	@echo "Building Docker image for $(BOLD)$(@D)$(RESET)..."
-	@sudo docker build -t $(DOCKER_REGISTRY)/$(@D) $(@D)
-	@mkdir -p .build/$(@D) && touch -r $@ $<
+	@version=`git describe --contains $(git log -n 1 --pretty=format:%H -- $(@D)) | cut -d~ -f1`; \
+	echo "Building Docker image for $(BOLD)$(@D):$$version$(RESET)..."; \
+	sudo docker build -t $(DOCKER_REGISTRY)/$(@D):$$version $(@D) && \
+	mkdir -p .build/$(@D) && touch -r $@ $<
 
 $(DEFINITIONS): % : .build/%.t
-	@echo "Building definition for $(BOLD)$(@)$(RESET)..."
-	@kubectl apply -f $@
-	@mkdir -p .build/$(@D) && touch -r $@ $<
+	@echo "Building definition for $(BOLD)$(@)$(RESET)..."; \
+	kubectl apply -f $@; \
+	mkdir -p .build/$(@D) && touch -r $@ $<
 
 $(TEMPLATES): % : .build/%.t
-	@echo "Building definition from template $(BOLD)$(@)$(RESET)..."
-	@bash -c 'bash <(printf "source $(TEMPLATE_ENV) && cat << __MAKE__\n$$(cat $@)\n__MAKE__\n")' | kubectl apply -f -
-	@mkdir -p .build/$(@D) && touch -r $@ $<
+	@echo "Building definition from template $(BOLD)$(@)$(RESET)..."; \
+	bash -c 'bash <(printf "source $(TEMPLATE_ENV) && cat << __MAKE__\n$$(cat $@)\n__MAKE__\n")' | kubectl apply -f - && \
+	mkdir -p .build/$(@D) && touch -r $@ $<
 
 # ----------------
 # Other directives.
@@ -54,7 +55,7 @@ $(TEMPLATES): % : .build/%.t
 
 # Create or update build tracking files, if needed. Each recipe checks against these files as
 # prerequisites, and determines whether the recipe commands need to be executed based on their status.
-ifeq ($(FORCE),true)
+ifeq ($(rebuild),true)
     $(foreach i,$(MAKECMDGOALS),$(shell rm -f .build/$(i).t))
 endif
 

@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: git-server
-          image: docker.deuill.org/default/git-server
+          image: docker.deuill.org/default/git-server:1.0.0-rc1
           imagePullPolicy: Never
           ports:
             - containerPort: 22

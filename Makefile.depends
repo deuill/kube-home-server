@@ -12,5 +12,55 @@
 # Note the use of order-only prerequisites (using the pipe symbol -- `|`), as normal prerequisites
 # will lead to rebuilding the `service.yaml` definition if ANY of the prerequisite files are newer.
 
-default/git-server/service.yaml: | default/git-server/Dockerfile
-default/git-server/service.yaml: | default/git-server/templates/ssh.yaml.template
+# Shared dependencies.
+default/git-server/service.yaml: | \
+	default/git-server/Dockerfile \
+	default/git-server/templates/ssh.yaml.template
+
+default/mariadb/service.yaml: | \
+	default/mariadb/Dockerfile \
+	default/mariadb/templates/config.yaml.template
+
+default/redis/service.yaml: | \
+	default/redis/Dockerfile
+
+# Web-related dependencies.
+web/php-fpm/service.yaml: | \
+	web/php-fpm/Dockerfile \
+	web/namespace.yaml
+
+web/nginx/Dockerfile: | \
+	web/php-fpm/service.yaml
+
+web/deuill.org/service.yaml: | \
+	default/git-fetch/Dockerfile \
+	default/hugo/Dockerfile \
+	web/nginx/Dockerfile \
+	web/namespace.yaml \
+	web/templates/ssh-key.yaml.template
+
+# Mail-related dependencies.
+mail/dovecot/service.yaml: | \
+	mail/dovecot/Dockerfile \
+	mail/namespace.yaml \
+	default/mariadb/service.yaml
+
+mail/rspamd/service.yaml: | \
+	mail/rspamd/Dockerfile \
+	mail/namespace.yaml \
+	default/redis/service.yaml \
+	mail/rspamd/templates/dkim-keys.yaml.template
+
+mail/postfix/service.yaml: | \
+	mail/postfix/Dockerfile \
+	mail/namespace.yaml \
+	default/mariadb/service.yaml \
+	mail/dovecot/service.yaml \
+	mail/rspamd/service.yaml \
+	mail/postfix/templates/mail-database.yaml.template
+
+# System dependencies.
+kube-system/ingress/ingress.yaml: | \
+	kube-system/voyager/service.yaml \
+	kube-system/ingress/templates/acme-account.yaml.template \
+	kube-system/ingress/certificates/deuill.org.yaml

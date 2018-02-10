@@ -4,8 +4,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/latest-stable/main" >> /etc/apk/r
     apk upgrade --no-cache --update && \
 	apk add postfix gettext
 
-COPY conf /etc/postfix
-ADD run-postfix /run-postfix
+COPY docker/conf /etc/postfix
+ADD docker/run-postfix /run-postfix
 
 EXPOSE 25 587
 ENTRYPOINT ["/run-postfix"]

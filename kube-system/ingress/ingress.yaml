@@ -8,12 +8,21 @@ metadata:
   annotations:
     ingress.appscode.com/type: HostPort
 spec:
+  # tls:
+  # - hosts:
+  #     - deuill.org
+  #     - mail.deuill.org
+  #     - git.deuill.org
+  #   ref:
+  #     kind: Certificate
+  #     name: deuill-org
   rules:
     # Websites and other web-facing services.
     - host: deuill.org
       http:
         paths:
-          - backend:
+          - path: /
+            backend:
               serviceName: deuill-org.web
               servicePort: 80
     # Mail-related services.

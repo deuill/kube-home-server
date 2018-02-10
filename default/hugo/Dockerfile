@@ -11,7 +11,7 @@ RUN curl -L https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/
 ENV HUGO_SOURCE /hugo/source
 ENV HUGO_BUILD /hugo/build
 
-ADD run-hugo /run-hugo
+ADD docker/run-hugo /run-hugo
 ENTRYPOINT ["/run-hugo"]
 
 CMD ["--source=${HUGO_SOURCE}", "--destination=${HUGO_BUILD}"]

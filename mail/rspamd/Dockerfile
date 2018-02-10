@@ -9,8 +9,8 @@ RUN echo "deb http://rspamd.com/apt-stable/ stretch main" > /etc/apt/sources.lis
     apt-get update && \
     apt-get install -y --no-install-recommends rspamd
 
-COPY conf /etc/rspamd
+COPY docker/conf /etc/rspamd
 EXPOSE 11332 11333 11334
 
-ADD run-rspamd /run-rspamd
+ADD docker/run-rspamd /run-rspamd
 ENTRYPOINT ["/run-rspamd"]
