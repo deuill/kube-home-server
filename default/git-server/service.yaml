@@ -3,11 +3,13 @@ kind: Service
 metadata:
   name: git-server
 spec:
+  type: NodePort
   selector:
     app: git-server
   ports:
     - name: ssh
       port: 22
+      nodePort: 468
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
