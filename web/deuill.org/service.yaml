@@ -19,6 +19,15 @@ data:
   deuill.org: |
     server {
       listen 80;
+      server_name www.deuill.org;
+
+      location / {
+        return 301 https://deuill.org$request_uri;
+      }
+    }
+
+    server {
+      listen 80;
       server_name deuill.org;
       root /srv/http/deuill;
 
@@ -43,9 +52,9 @@ spec:
           imagePullPolicy: Never
           env:
             - name: GIT_REPOSITORY
-              value: git@deuill.org:deuill.git
+              value: git@git-server.default.svc.cluster.local:deuill/deuill.org.git
             - name: GIT_REVISION
-              value: bae62c859ab5915d19602e88f098e69605dd9859
+              value: 4bd9e0fe08c8a456e7a18e83dce6e6c1524e505d
             - name: GIT_ROOT
               value: /git/deuill
           volumeMounts:
