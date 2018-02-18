@@ -4,13 +4,16 @@ metadata:
   name: postfix
   namespace: mail
 spec:
+  type: NodePort
   selector:
     app: postfix
   ports:
     - name: smtp
       port: 25
+      nodePort: 25
     - name: submission
       port: 587
+      nodePort: 587
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -25,13 +28,13 @@ spec:
     spec:
       containers:
         - name: postfix
-          image: docker.deuill.org/mail/postfix
+          image: docker.deuill.org/mail/postfix:1.0.0-rc1
           imagePullPolicy: Never
           env:
             - name: MAIL_HOSTNAME
               value: mail.deuill.org
             - name: MAIL_SASL_PATH
-              value: inet:dovecot.mail.svc.cluster.local:3659
+              value: inet:dovecot-sasl.mail.svc.cluster.local:3659
             - name: MAIL_MILTER_PATH
               value: inet:rspamd.mail.svc.cluster.local:11332
             - name: DATABASE_HOST
@@ -51,7 +54,13 @@ spec:
           volumeMounts:
             - name: mail
               mountPath: /var/mail
+            - name: cert
+              mountPath: /etc/ssl/private/mail.deuill.org
+              readOnly: true
       volumes:
         - name: mail
           hostPath:
             path: /opt/kubernetes/mail/shared
+        - name: cert
+          secret:
+            secretName: mail-deuill-org-certificate

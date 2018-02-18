@@ -47,7 +47,8 @@ web/deuill.org/service.yaml: | \
 mail/dovecot/service.yaml: | \
 	mail/dovecot/Dockerfile \
 	mail/namespace.yaml \
-	default/mariadb/service.yaml
+	default/mariadb/service.yaml \
+	mail/postfix/certificates/mail.deuill.org.yaml
 
 mail/rspamd/service.yaml: | \
 	mail/rspamd/Dockerfile \
@@ -61,7 +62,8 @@ mail/postfix/service.yaml: | \
 	default/mariadb/service.yaml \
 	mail/dovecot/service.yaml \
 	mail/rspamd/service.yaml \
-	mail/postfix/templates/mail-database.yaml.template
+	mail/postfix/templates/mail-database.yaml.template \
+	mail/postfix/certificates/mail.deuill.org.yaml
 
 # System dependencies.
 kube-system/ingress/ingress.yaml: | \

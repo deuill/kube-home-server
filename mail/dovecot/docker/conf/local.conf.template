@@ -58,7 +58,11 @@ namespace inbox {
 
 # Enabled protocols.
 protocols = imap lmtp
-ssl = no
+
+# Enable SSL and STARTTLS.
+ssl = yes
+ssl_cert = </etc/ssl/private/${MAIL_HOSTNAME}/tls.crt
+ssl_key = </etc/ssl/private/${MAIL_HOSTNAME}/tls.key
 
 protocol imap {
 	mail_max_userip_connections = 25
@@ -86,7 +90,7 @@ service pop3-login {
 # ----------------------
 
 auth_mechanisms = plain login
-disable_plaintext_auth = no
+disable_plaintext_auth = yes
 
 # Enable SASL authentication on specific TCP port.
 service auth {
