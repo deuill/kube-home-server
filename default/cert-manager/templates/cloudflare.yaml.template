@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudflare-api
+  namespace: kube-system
+type: Opaque
+data:
+  key: $(secret-from-gpg <<< "
+    -----BEGIN PGP MESSAGE-----
+
+    hQIMAzy6/E8lNkAOAQ/+IeyktUcOIfh+enq+Dm1iGdTMuBUYGXeI8T/porQSPNRf
+    YKGxiHT0KSiDRgxkfiGPA2eI7/kdD7ma64OnE8m0ZXeeUkrETYCMUoJae6ptNYKf
+    QvM+dN8kmpMcAOA+btqqGmYLbk/BUVHGY3RWw50hCL6/J9YlHGpbdI4EwICg4ckL
+    CTgQYWV5tJ5CsQNPjKw+sYv/Ezh3tNyQftOHdZGEc7IQIKBvE3QDNrq5x9gPZhaI
+    1z0YYsRulelIHhRyHxUr57ZfhYzuoiZCXLH6pIy/tSUocZaJIXY01NWBkev3Vo2K
+    9jLRUMtYyw3CplMJ28aEYCcQuO+OISo6mXwaUtrUmsn+h+duYIXuNjYcrp44fNt8
+    PSuSjT0kiGtVttMZ2DMK5A/nCsDy6LsGAzXpEWBgbPcSBM3C7v9jQwjVRBlOLjeT
+    33MXVJiPMxdhgnw9TRc3cqlNj+O6xqjnxp3Z7VUcsIprFcult7//P556onBFc0/D
+    s8WjuFmm3hPTeW4T0OaKi/X5W1nqcAg6vPNhAgv9dZQeUxJDsi43CCpK+9uiQt0P
+    XVVHFjFZaIB09T04ofSab/P3rwQOgRFHtCxAnvKzvODEmzbxxXAXDx0byo4Ylgtg
+    Yw8ZLMOug/VsjSZ8OESAX9P+4+qeqXtPvCr0snunSnuEK8A1XHKc8JRw5tOpM27S
+    YAH8xtrRYZG6T25vIguA5TAmCHUZMcztLeBTSa0MB3jFMu1sWfGUzfDn+lD/fXLe
+    Gk6P3fqY1rfS9CAg78g6HLGNQ97yyytSInYIcMz3cNLr81XjdwGkXmOsYTi6JZTK
+    HA==
+    =F28z
+    -----END PGP MESSAGE-----")

@@ -24,6 +24,10 @@ default/mariadb/service.yaml: | \
 default/redis/service.yaml: | \
 	default/redis/Dockerfile
 
+default/cert-manager/templates/issuer.yaml.template: | \
+	default/cert-manager/deployment.yaml \
+	default/cert-manager/templates/cloudflare.yaml.template
+
 # Web-related dependencies.
 web/php-fpm/service.yaml: | \
 	web/php-fpm/Dockerfile \

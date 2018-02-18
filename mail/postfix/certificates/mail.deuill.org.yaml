@@ -1,0 +1,17 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: mail-deuill-org
+  namespace: mail
+spec:
+  secretName: mail-deuill-org-certificate
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+  commonName: mail.deuill.org
+  acme:
+    config:
+      - dns01:
+          provider: cloudflare-dns
+        domains:
+          - mail.deuill.org
