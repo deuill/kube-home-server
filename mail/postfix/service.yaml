@@ -11,6 +11,9 @@ spec:
     - name: smtp
       port: 25
       nodePort: 25
+    - name: smtps
+      port: 465
+      nodePort: 465
     - name: submission
       port: 587
       nodePort: 587
@@ -28,7 +31,7 @@ spec:
     spec:
       containers:
         - name: postfix
-          image: docker.deuill.org/mail/postfix:1.0.0-rc1
+          image: docker.deuill.org/mail/postfix:1.0.0-rc2
           imagePullPolicy: Never
           env:
             - name: MAIL_HOSTNAME
@@ -50,6 +53,7 @@ spec:
                   key: password
           ports:
             - containerPort: 25
+            - containerPort: 465
             - containerPort: 587
           volumeMounts:
             - name: mail

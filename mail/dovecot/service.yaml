@@ -11,6 +11,9 @@ spec:
     - name: imap
       port: 143
       nodePort: 143
+    - name: imaps
+      port: 993
+      nodePort: 993
 ---
 apiVersion: v1
 kind: Service
@@ -37,7 +40,7 @@ spec:
     spec:
       containers:
         - name: dovecot
-          image: docker.deuill.org/mail/dovecot:1.0.0-rc1
+          image: docker.deuill.org/mail/dovecot:1.0.0-rc2
           imagePullPolicy: Never
           env:
             - name: MAIL_HOSTNAME
@@ -55,6 +58,7 @@ spec:
                   key: password
           ports:
             - containerPort: 143
+            - containerPort: 993
             - containerPort: 3659
           volumeMounts:
             - name: mail

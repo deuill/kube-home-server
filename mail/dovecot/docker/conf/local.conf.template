@@ -6,7 +6,7 @@
 
 # Logging & debugging.
 log_path = /dev/stderr
-mail_debug = yes
+auth_verbose = yes
 
 # Mail directory.
 mail_location = maildir:/var/mail/virtual/%u

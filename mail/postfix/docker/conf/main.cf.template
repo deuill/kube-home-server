@@ -120,14 +120,12 @@ milter_mail_macros = i {mail_addr} {client_addr} {client_name} {auth_authen}
 milter_default_action = accept
 
 # Enable SASL authentication.
-smptd_sasl_type = dovecot
+smtpd_sasl_type = dovecot
 smtpd_sasl_auth_enable = yes
 smtpd_sasl_path = ${MAIL_SASL_PATH}
 
 # Do not enable support for broken email clients (such as Outlook).
 broken_sasl_auth_clients = no
-
-smtpd_sasl_security_options = noanonymous
 smtpd_sasl_local_domain =
 
 # TLS configuration parameters.
@@ -140,6 +138,6 @@ smtpd_tls_session_cache_timeout = 3600s
 tls_random_source = dev:/dev/urandom
 
 # Certificate file location.
-smtpd_tls_cert_file=/etc/ssl/private/${MAIL_HOSTNAME}/tls.crt
-smtpd_tls_key_file=/etc/ssl/private/${MAIL_HOSTNAME}/tls.key
+smtpd_tls_cert_file = /etc/ssl/private/${MAIL_HOSTNAME}/tls.crt
+smtpd_tls_key_file = /etc/ssl/private/${MAIL_HOSTNAME}/tls.key
 smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt

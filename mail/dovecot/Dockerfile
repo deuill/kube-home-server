@@ -7,5 +7,5 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/latest-stable/main" >> /etc/apk/r
 COPY docker/conf /etc/dovecot
 ADD docker/run-dovecot /run-dovecot
 
-EXPOSE 143 3659
+EXPOSE 143 993 3659
 ENTRYPOINT ["/run-dovecot"]

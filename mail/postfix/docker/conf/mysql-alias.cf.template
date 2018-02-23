@@ -5,5 +5,4 @@ dbname = ${DATABASE_NAME}
 table = aliases
 select_field = destination
 where_field = mail
-hosts = 127.0.0.1
 additional_conditions = AND enabled = 1
