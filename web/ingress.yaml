@@ -12,6 +12,9 @@ spec:
     - secretName: deuill-org-certificate
       hosts:
         - deuill.org
+    - secretName: repository-deuill-org-certificate
+      hosts:
+        - repository.deuill.org
   rules:
     - host: deuill.org
       http:
@@ -19,4 +22,11 @@ spec:
           - path: /
             backend:
               serviceName: deuill-org
+              servicePort: 80
+    - host: repository.deuill.org
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: repository-deuill-org
               servicePort: 80

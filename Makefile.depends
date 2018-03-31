@@ -29,14 +29,7 @@ default/cert-manager/templates/issuer.yaml.template: | \
 	default/cert-manager/templates/cloudflare.yaml.template
 
 # Web-related dependencies.
-web/php-fpm/service.yaml: | \
-	web/php-fpm/Dockerfile \
-	web/namespace.yaml
-
-web/nginx/Dockerfile: | \
-	web/php-fpm/service.yaml
-
-web/deuill.org/service.yaml: | \
+web/sites/deuill.org.yaml: | \
 	default/git-fetch/Dockerfile \
 	default/hugo/Dockerfile \
 	web/nginx/Dockerfile \
@@ -64,9 +57,3 @@ mail/postfix/service.yaml: | \
 	mail/rspamd/service.yaml \
 	mail/postfix/templates/mail-database.yaml.template \
 	mail/postfix/certificates/mail.deuill.org.yaml
-
-# System dependencies.
-kube-system/ingress/ingress.yaml: | \
-	kube-system/voyager/service.yaml \
-	kube-system/ingress/templates/acme-account.yaml.template \
-	kube-system/ingress/certificates/deuill.org.yaml

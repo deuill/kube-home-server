@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: repository-deuill-org
+  namespace: web
+spec:
+  selector:
+    app: repository-deuill-org
+  ports:
+    - name: http
+      port: 80
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: repository-deuill-org
+  namespace: web
+data:
+  mail.deuill.org: |
+    server {
+      listen 80;
+      server_name repository.deuill.org;
+      root /srv/http/repository;
+
+      location / {
+        charset utf-8;
+        autoindex on;
+      }
+
+      include conf/basic.conf;
+    }
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: repository-deuill-org
+  namespace: web
+spec:
+  template:
+    metadata:
+      labels:
+        app: repository-deuill-org
+    spec:
+      containers:
+        - name: nginx
+          image: docker.deuill.org/web/nginx:1.0.0-rc1
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: repository
+              mountPath: /srv/http/repository
+            - name: config
+              mountPath: /etc/nginx/sites-enabled
+      volumes:
+        - name: repository
+          hostPath:
+            path: /opt/kubernetes/web/jlime-repository
+        - name: config
+          configMap:
+            name: repository-deuill-org
