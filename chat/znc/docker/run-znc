@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Create required user and group.
+addgroup --system znc
+adduser --system --ingroup znc --home "$ZNC_DATA_DIR" znc
+
+# Synchronize configuration file.
+mkdir -p "$ZNC_DATA_DIR/configs"
+envsubst '$ZNC_USER_NICKNAME $ZNC_USER_REALNAME $ZNC_USER_PASSWORD' \
+		 < /etc/znc/znc.conf.template > "$ZNC_DATA_DIR/configs/znc.conf"
+
+# Synchronize certficate.
+cat "/etc/ssl/private/$ZNC_HOSTNAME/tls.key" >  "$ZNC_DATA_DIR/znc.pem"
+cat "/etc/ssl/private/$ZNC_HOSTNAME/tls.crt" >> "$ZNC_DATA_DIR/znc.pem"
+
+chown -R znc:znc "$ZNC_DATA_DIR"
+sudo -u znc -- /usr/bin/znc --foreground --datadir "$ZNC_DATA_DIR" "$@"

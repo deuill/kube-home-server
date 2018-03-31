@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: znc-user
+  namespace: chat
+type: Opaque
+data:
+  nickname: $(echo -n "deuill" | secret-from-string)
+  realname: $(echo -n "Alex" | secret-from-string)
+  # Password needs to be a generated via 'znc --makepass'.
+  password: $((secret-from-gpg) <<< "
+    -----BEGIN PGP MESSAGE-----
+
+    hQIMAzy6/E8lNkAOARAAoIKXWkQLH5k82eZRIs50DkCtoCa+xpPQ4hRNHhmFqkWB
+    HcP2m0B2tP7CFAcM2yZyJx9B7O5G43BywbBRsJKU2bH2stLUjObKlwFWAS98xJpc
+    5f7ML6YHmAIbg/PdARLnEP4iMLV5QH9oorjY7o+OkTqrZbf3ci7lKMoGvomoTD+Y
+    31iTnQhGY1HqUecVWlHVVMT/ruY7xrW51jABwto9NdH9otcxzkG9mO+c3/CJeAHv
+    2GK7zv6lJRPPK0uoxLmE125TBcX1ayzbbwwQAdEi9+oJsUR2dPHoAz55h2eh8QM4
+    uwlKSIXsqHuF2I1UKuRK5eTAJspacQjQzD7rrympyYfIWoLVxvLcOptu6n+nLn3J
+    CRZJamn0/hhUGrwdV2sRF7xTlVzQNhDHDMtHA89WkYVyYqQNawvBlGaWqW9DsWkW
+    V4GrbfE7M5Fi7Zaf+Ex06hsPVOeRZ+k9DzB1x1LrhMtaaShH6eDKjk1hz18qczL0
+    zZ16SZ+n9aVymEr7MWon0zhNNMuFXHm5y+AHd5u0VYPTO+xdFnvtVza4nP8qhaJh
+    XsookrfgrjbWRRsYt5LykJWXjP6AMxVn6CCRymGNErgIzSk5NsQUViYpa8iY8Y82
+    Twjkjd8JZIZB2nURUMWkcuwtj8ZcKTy8UAlNtFQgxYhJ2p2ZD1Pi0wesNnjkkpTS
+    wAMB8Ht/QgUxDb9Ogl0FXBRb2Gj3vPqq9mqfUJnYb7IWfUqOWoH53ySnG7XhDy4W
+    YFcIR/tlkzdDGabOF95rIG6pHDq2j7/LWMOmbKE1fE2XmC7FPZZguPJQP84L8PbP
+    betnngXG221uM/jRNoFsE8MNBtA22OSEUMXacGxe5DL/9n3GPL9ayvYULatokqiC
+    Shdb6c8abNS1XOya7BLASOmkDkai12A6/HWED1hoGlxfeuvtHSsVp20BDu/eLFD9
+    WzzQZjg=
+    =7HDP
+    -----END PGP MESSAGE-----")

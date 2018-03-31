@@ -1,0 +1,17 @@
+<Listener l>
+	Port = 6667
+	IPv4 = true
+	IPv6 = false
+	SSL  = true
+</Listener>
+
+<User ${ZNC_USER_NICKNAME}>
+	Admin      = true
+	Nick       = ${ZNC_USER_NICKNAME}
+	AltNick    = ${ZNC_USER_NICKNAME}_
+	Ident      = ${ZNC_USER_NICKNAME}
+	RealName   = ${ZNC_USER_REALNAME}
+	LoadModule = chansaver
+	LoadModule = controlpanel
+    ${ZNC_USER_PASSWORD}
+</User>
