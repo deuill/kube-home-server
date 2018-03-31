@@ -1,7 +1,6 @@
-FROM nginx:stable-alpine
+FROM nginx:1.12.2
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/latest-stable/main" >> /etc/apk/repositories && \
-    apk upgrade --no-cache --update
+RUN apt-get update -y && apt-get upgrade -y
 
 RUN rm -rf /etc/nginx
 COPY docker/conf /etc/nginx
