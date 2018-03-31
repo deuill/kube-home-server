@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bitlbee
+  namespace: chat
+spec:
+  selector:
+    app: bitlbee
+  ports:
+    - name: bitlbee
+      port: 6667
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: bitlbee
+  namespace: chat
+spec:
+  template:
+    metadata:
+      labels:
+        app: bitlbee
+    spec:
+      containers:
+        - name: bitlbee
+          image: docker.deuill.org/chat/bitlbee:1.0.0-rc2
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 6667
+          volumeMounts:
+            - name: bitlbee
+              mountPath: /var/lib/bitlbee
+      volumes:
+        - name: bitlbee
+          hostPath:
+            path: /opt/kubernetes/chat/bitlbee
