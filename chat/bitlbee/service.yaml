@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: bitlbee
-          image: docker.deuill.org/chat/bitlbee:1.0.0-rc2
+          image: docker.deuill.org/chat/bitlbee:3.5.1
           imagePullPolicy: Never
           ports:
             - containerPort: 6667

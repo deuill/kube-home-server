@@ -48,7 +48,7 @@ spec:
     spec:
       initContainers:
         - name: git
-          image: docker.deuill.org/default/git-fetch:1.0.0-rc1
+          image: docker.deuill.org/default/git-fetch:1.0.0
           imagePullPolicy: Never
           env:
             - name: GIT_REPOSITORY
@@ -63,7 +63,7 @@ spec:
             - name: deuill-org-source
               mountPath: /git
         - name: hugo
-          image: docker.deuill.org/default/hugo:1.0.0-rc1
+          image: docker.deuill.org/default/hugo:0.39
           imagePullPolicy: Never
           env:
             - name: HUGO_SOURCE
@@ -75,7 +75,7 @@ spec:
               mountPath: /hugo/build
       containers:
         - name: nginx
-          image: docker.deuill.org/web/nginx:1.0.0-rc1
+          image: docker.deuill.org/web/nginx:1.12.2
           imagePullPolicy: Never
           ports:
             - containerPort: 80

@@ -26,7 +26,7 @@ spec:
         fsGroup: 101
       containers:
         - name: rspamd
-          image: docker.deuill.org/mail/rspamd
+          image: docker.deuill.org/mail/rspamd:1.7.3
           imagePullPolicy: Never
           ports:
             - containerPort: 11332

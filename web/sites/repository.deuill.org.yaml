@@ -43,7 +43,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: docker.deuill.org/web/nginx:1.0.0-rc1
+          image: docker.deuill.org/web/nginx:1.12.2
           imagePullPolicy: Never
           ports:
             - containerPort: 80

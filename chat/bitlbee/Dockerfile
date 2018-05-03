@@ -1,8 +1,9 @@
 FROM debian:stable-slim
+ARG VERSION=3.5.1
 
 ENV BUILD_DEPS="build-essential git curl libpurple-dev libglib2.0-dev libjson-glib-dev"
 RUN apt-get update -y && apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends bitlbee-libpurple ca-certificates ${BUILD_DEPS}
+    apt-get install -y --no-install-recommends bitlbee-libpurple=${VERSION}* ca-certificates ${BUILD_DEPS}
 
 RUN git clone https://github.com/dylex/slack-libpurple.git && cd slack-libpurple && make && make install
 RUN git clone git://github.com/EionRobb/skype4pidgin.git && cd skype4pidgin/skypeweb && make && make install

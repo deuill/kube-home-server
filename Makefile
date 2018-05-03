@@ -32,7 +32,7 @@ help:
 # --------------
 
 $(IMAGES): % : .build/%.t
-	@version=`git log --tags --simplify-by-decoration --format="%D" -- $(@D) | awk '$$0 ~ "tag:" {print $$2}'`; \
+	@version=`awk -F'=' '/ARG VERSION/ {print $$2; exit}' $@`; \
 	echo "Building Docker image for $(BOLD)$(@D):$$version$(RESET)..."; \
 	sudo docker build -t $(DOCKER_REGISTRY)/$(@D):$$version $(@D) && \
 	mkdir -p .build/$(@D) && touch -r $@ $<

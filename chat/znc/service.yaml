@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: znc
-          image: docker.deuill.org/chat/znc:1.0.0-rc2
+          image: docker.deuill.org/chat/znc:1.6.5
           imagePullPolicy: Never
           env:
             - name: ZNC_HOSTNAME

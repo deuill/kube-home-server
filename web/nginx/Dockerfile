@@ -1,4 +1,5 @@
 FROM nginx:1.12.2
+ARG VERSION=1.12.2
 
 RUN apt-get update -y && apt-get upgrade -y
 
