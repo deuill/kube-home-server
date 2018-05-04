@@ -23,7 +23,7 @@ admins = {}
 
 -- Enable use of libevent for better performance under high load
 -- For more information see: https://prosody.im/doc/libevent
--- use_libevent = true
+use_libevent = true
 
 -- Prosody will always look in its source directory for modules, but
 -- this option allows you to specify additional locations where Prosody
@@ -37,6 +37,7 @@ modules_enabled = {
 	-- Generally required
 	"roster"; -- Allow users to have a roster. Recommended ;)
 	"saslauth"; -- Authentication for clients and servers. Recommended if you want to log in.
+	"tls"; -- Add support for secure TLS on c2s/s2s connections
 	"dialback"; -- s2s dialback support
 	"disco"; -- Service discovery
 
@@ -56,31 +57,32 @@ modules_enabled = {
 	"mam"; -- Store messages in an archive and allow users to access it
 
 	-- Admin interfaces
-	"admin_adhoc"; -- Allows administration via an XMPP client that supports ad-hoc commands
+	-- "admin_adhoc"; -- Allows administration via an XMPP client that supports ad-hoc commands
+	--"admin_telnet"; -- Opens telnet console interface on localhost port 5582
 
 	-- HTTP modules
-	-- "bosh"; -- Enable BOSH clients, aka "Jabber over HTTP"
-	-- "websocket"; -- XMPP over WebSockets
-	-- "http_files"; -- Serve static files from a directory over HTTP
+	--"bosh"; -- Enable BOSH clients, aka "Jabber over HTTP"
+	--"websocket"; -- XMPP over WebSockets
+	--"http_files"; -- Serve static files from a directory over HTTP
 
 	-- Other specific functionality
-	-- "limits"; -- Enable bandwidth limiting for XMPP connections
-	-- "groups"; -- Shared roster support
-	-- "server_contact_info"; -- Publish contact information for this service
-	-- "announce"; -- Send announcement to all online users
-	-- "welcome"; -- Welcome users who register accounts
-	-- "watchregistrations"; -- Alert admins of registrations
-	-- "motd"; -- Send a message to users when they log in
-	-- "legacyauth"; -- Legacy authentication. Only used by some old clients and bots.
-	-- "proxy65"; -- Enables a file transfer proxy service which clients behind NAT can use
+	--"limits"; -- Enable bandwidth limiting for XMPP connections
+	--"groups"; -- Shared roster support
+	--"server_contact_info"; -- Publish contact information for this service
+	--"announce"; -- Send announcement to all online users
+	--"welcome"; -- Welcome users who register accounts
+	--"watchregistrations"; -- Alert admins of registrations
+	--"motd"; -- Send a message to users when they log in
+	--"legacyauth"; -- Legacy authentication. Only used by some old clients and bots.
+	--"proxy65"; -- Enables a file transfer proxy service which clients behind NAT can use
 }
 
 -- These modules are auto-loaded, but should you want
 -- to disable them then uncomment them here:
 modules_disabled = {
-	-- "offline"; -- Store offline messages
-	-- "c2s"; -- Handle client connections
-	-- "s2s"; -- Handle server-to-server connections
+	--"offline"; -- Store offline messages
+	--"c2s"; -- Handle client connections
+	--"s2s"; -- Handle server-to-server connections
 	"posix"; -- POSIX functionality, sends server to background, enables syslog, etc.
 }
 
@@ -90,12 +92,12 @@ allow_registration = false
 
 -- Force clients to use encrypted connections? This option will
 -- prevent clients from authenticating unless they are using encryption.
-c2s_require_encryption = false
+c2s_require_encryption = true
 
 -- Force servers to use encrypted connections? This option will
 -- prevent servers from authenticating unless they are using encryption.
 -- Note that this is different from authentication
-s2s_require_encryption = false
+s2s_require_encryption = true
 
 -- Force certificate authentication for server-to-server connections?
 -- This provides ideal security, but requires servers you communicate
@@ -108,14 +110,11 @@ s2s_secure_auth = false
 -- remote domains here that will not be required to authenticate using
 -- certificates. They will be authenticated using DNS instead, even
 -- when s2s_secure_auth is enabled.
--- s2s_insecure_domains = { "insecure.example" }
+--s2s_insecure_domains = { "insecure.example" }
 
 -- Even if you leave s2s_secure_auth disabled, you can still require valid
 -- certificates for some domains by specifying a list here.
--- s2s_secure_domains = { "jabber.org" }
-
--- Required for init scripts and prosodyctl
-pidfile = "/var/run/prosody/prosody.pid"
+--s2s_secure_domains = { "jabber.org" }
 
 -- Select the authentication backend to use. The 'internal' providers
 -- use Prosody's configured data storage to store the authentication data.
@@ -129,9 +128,8 @@ authentication = "internal_hashed"
 -- in its configured data directory, but it also supports more backends
 -- through modules. An "sql" backend is included by default, but requires
 -- additional dependencies. See https://prosody.im/doc/storage for more info.
-storage = "sql"
 
--- For the "sql" backend, you can uncomment *one* of the below to configure:
+storage = "sql" -- Default is "internal"
 sql = {
 	driver   = "MySQL",
 	host     = os.getenv("DATABASE_HOST") or "localhost",
@@ -139,8 +137,11 @@ sql = {
 	username = os.getenv("DATABASE_USERNAME") or "prosody",
 	password = os.getenv("DATABASE_PASSWORD") or ""
 }
--- sql = { driver = "SQLite3", database = "prosody.sqlite" } -- Default. 'database' is the filename.
--- sql = { driver = "PostgreSQL", database = "prosody", username = "prosody", password = "secret", host = "localhost" }
+
+-- For the "sql" backend, you can uncomment *one* of the below to configure:
+--sql = { driver = "SQLite3", database = "prosody.sqlite" } -- Default. 'database' is the filename.
+--sql = { driver = "MySQL", database = "prosody", username = "prosody", password = "secret", host = "localhost" }
+--sql = { driver = "PostgreSQL", database = "prosody", username = "prosody", password = "secret", host = "localhost" }
 
 -- Archiving configuration
 -- If mod_mam is enabled, Prosody will store a copy of every message. This
@@ -155,7 +156,7 @@ archive_expires_after = "1w" -- Remove archived messages after 1 week
 
 -- Logging configuration
 -- For advanced logging see https://prosody.im/doc/logging
-log = "*console"
+log = {{to = "console", levels = {min = "info"}}}
 
 -- Uncomment to enable statistics
 -- For more info see https://prosody.im/doc/statistics
@@ -169,7 +170,7 @@ log = "*console"
 -- (from e.g. Let's Encrypt) see https://prosody.im/doc/certificates
 
 -- Location of directory to find certificates in (relative to main config file):
-certificates = "certs"
+certificates = "certificates"
 
 ----------- Virtual hosts -----------
 -- You need to add a VirtualHost entry for each domain you wish Prosody to serve.
@@ -177,22 +178,28 @@ certificates = "certs"
 
 VirtualHost "localhost"
 
+-- Disable TLS for local connections, which generally don't require encryption.
+modules_disabled = {"tls"}
+
+--VirtualHost "example.com"
+--	certificate = "/path/to/example.crt"
+
 ------ Components ------
 -- You can specify components to add hosts that provide special services,
 -- like multi-user conferences, and transports.
 -- For more information on components, see https://prosody.im/doc/components
 
--- Set up a MUC (multi-user chat) room server on conference.example.com:
--- Component "conference.example.com" "muc"
+---Set up a MUC (multi-user chat) room server on conference.example.com:
+--Component "conference.example.com" "muc"
 
--- Set up an external component (default component port is 5347)
+---Set up an external component (default component port is 5347)
 --
 -- External components allow adding various services, such as gateways/
 -- transports to other networks like ICQ, MSN and Yahoo. For more info
 -- see: https://prosody.im/doc/components#adding_an_external_component
 --
--- Component "gateway.example.com"
--- component_secret = "password"
+--Component "gateway.example.com"
+--	component_secret = "password"
 
--- Additional configuration.
+--------- Additional configuration ---------
 include "conf.d/*.cfg.lua"

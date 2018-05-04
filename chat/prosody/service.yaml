@@ -27,14 +27,13 @@ data:
   deuill.org.cfg.lua: |
     VirtualHost "deuill.org"
 
-    certificates = "/etc/ssl/private/chat.deuill.org"
-    authentication = "imap"
+    certificate = "/etc/ssl/private/deuill.org/tls.crt"
 
+    authentication = "imap"
     imap_auth_host = os.getenv("IMAP_AUTH_HOST") or "localhost"
     imap_auth_port = os.getenv("IMAP_AUTH_PORT") or 993
 
     auth_append_host = true
-    auth_imap_verify_certificate = false
     auth_imap_ssl = {
         mode     = "client",
         protocol = "tlsv1_2"
@@ -81,7 +80,7 @@ spec:
             - name: prosody-config
               mountPath: /etc/prosody/conf.d
             - name: cert
-              mountPath: /etc/ssl/private/chat.deuill.org
+              mountPath: /etc/ssl/private/deuill.org
               readOnly: true
       volumes:
         - name: prosody-data
@@ -92,4 +91,4 @@ spec:
             name: prosody
         - name: cert
           secret:
-            secretName: chat-deuill-org-certificate
+            secretName: deuill-org-certificate
