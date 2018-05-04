@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: prosody-database
+  namespace: chat
+type: Opaque
+data:
+  password: $((secret-from-gpg) <<< "
+    -----BEGIN PGP MESSAGE-----
+
+    hQIMAzy6/E8lNkAOAQ//QfCbIfvbWU2Waa8/tdtzqnDg4k2EV+PFrCrv7nWhzIJf
+    DC3Srput9qe8XzGNtjs1T2Zxh4VbxKxUlfvEuIX77A/1nmRMmhEXOAS0P+a+IDph
+    Zk9bVrDPj2gj9GdC41IDsGktSZrHcYBFUf1l/xTfEYbQNwJYD2CsmIMAOKl/RCmP
+    p/TZSJAUAyE5qZjQjixUMnj98gVPjno44cMblvr1vY04MaG3Giyuexqz/pRbpOkB
+    RkuwvmQgZNjrwpfXkBugKJSx8NDAmHT+W602A+myUQWDx27LCUyqy/Um8YKmlhl9
+    va32cPuvb54IjGUEFObxZrKY/Zz1BfkszW24TbL99lLcE9MaqnUcOF6rZpJcDEIx
+    R4S/qjzTDS3rX+TJPj5C8nPHxk+agh5AFt+9ememj+Pjoa4/H6S4GYDZBLbhoHuZ
+    q50lCHa+0LGJ3bG0DcuaAohMbPw5HASuUEC5o1FEC4tznyvy22sBG051d/1QhmL9
+    qWnCSW1ps4ADHFIl7Gle1gdvEbC3C0TVpaFIjg47zmn74X1RMEZG6OwFX3zqNlHV
+    drLbVkq26zPbXdhBn2ykdrVUIn7dv1gXPth8hooewxFFeIEDmSq8RNiBImny9Y3v
+    zse+opt8G/BS7G0SX3svhyCVb3TVTikdBKcX+V/Wv+fUaWCJor8ys/vlbFak1hnS
+    nwGKvWpMH3Trt+nA1CAbmLAYXsHRjzy5MojD3YN+GzTQ84ArMJ9H1lMw4SWAiMk0
+    5zi0mW8Gz0ZcgGwHC+T6TnsOqZDS/5WG4aZOEtyrDW9AIpPVa45KdDU9TBkltLEP
+    +iKlFeQ7yehk0vi3oPMff+VIQbixLi4o3PSSTuyWlpi1bULxDrc+KwpjYHpmGhw/
+    dVgbm9zzQV33Jws8RJDDGQ==
+    =nvFN
+    -----END PGP MESSAGE-----")

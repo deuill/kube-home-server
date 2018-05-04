@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prosody
+  namespace: chat
+spec:
+  type: NodePort
+  selector:
+    app: prosody
+  ports:
+    - name: c2s
+      port: 5222
+      nodePort: 5222
+    - name: s2s
+      port: 5269
+      nodePort: 5269
+    - name: xmpp
+      port: 5347
+      nodePort: 5347
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prosody
+  namespace: chat
+data:
+  deuill.org.cfg.lua: |
+    VirtualHost "deuill.org"
+
+    certificates = "/etc/ssl/private/chat.deuill.org"
+    authentication = "imap"
+
+    imap_auth_host = os.getenv("IMAP_AUTH_HOST") or "localhost"
+    imap_auth_port = os.getenv("IMAP_AUTH_PORT") or 993
+
+    auth_append_host = true
+    auth_imap_verify_certificate = false
+    auth_imap_ssl = {
+        mode     = "client",
+        protocol = "tlsv1_2"
+    }
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: prosody
+  namespace: chat
+spec:
+  template:
+    metadata:
+      labels:
+        app: prosody
+    spec:
+      containers:
+        - name: prosody
+          image: docker.deuill.org/chat/prosody:0.10.0
+          imagePullPolicy: Never
+          env:
+            - name: DATABASE_HOST
+              value: mariadb.default.svc.cluster.local
+            - name: DATABASE_NAME
+              value: prosody
+            - name: DATABASE_USERNAME
+              value: prosody
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: prosody-database
+                  key: password
+            - name: IMAP_AUTH_HOST
+              value: dovecot.mail.svc.cluster.local
+            - name: IMAP_AUTH_PORT
+              value: "993"
+          ports:
+            - containerPort: 5222
+            - containerPort: 5269
+            - containerPort: 5347
+          volumeMounts:
+            - name: prosody-data
+              mountPath: /var/lib/prosody
+            - name: prosody-config
+              mountPath: /etc/prosody/conf.d
+            - name: cert
+              mountPath: /etc/ssl/private/chat.deuill.org
+              readOnly: true
+      volumes:
+        - name: prosody-data
+          hostPath:
+            path: /opt/kubernetes/chat/prosody
+        - name: prosody-config
+          configMap:
+            name: prosody
+        - name: cert
+          secret:
+            secretName: chat-deuill-org-certificate
