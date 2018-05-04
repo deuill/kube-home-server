@@ -57,7 +57,7 @@ namespace inbox {
 # ----------------------
 
 # Enabled protocols.
-protocols = imap lmtp
+protocols = imap lmtp sieve
 
 # Enable SSL and STARTTLS.
 ssl = yes
@@ -71,6 +71,10 @@ protocol imap {
 service imap-login {
 	inet_listener imap {
 		port = 143
+	}
+
+	inet_listener imaps {
+		port = 993
 	}
 }
 
@@ -108,3 +112,9 @@ passdb {
 	driver = sql
 	args = /etc/dovecot/dovecot-sql.conf.local
 }
+
+# -------------------------
+# Additional configuration.
+# -------------------------
+
+!include conf.d/*.conf

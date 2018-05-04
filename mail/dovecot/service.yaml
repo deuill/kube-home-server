@@ -27,6 +27,14 @@ spec:
     - name: sasl
       port: 3659
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dovecot
+  namespace: mail
+data:
+  00-empty.conf: ""
+---
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
@@ -40,7 +48,7 @@ spec:
     spec:
       containers:
         - name: dovecot
-          image: docker.deuill.org/mail/dovecot:1.0.0-rc2
+          image: docker.deuill.org/mail/dovecot:2.2.27
           imagePullPolicy: Never
           env:
             - name: MAIL_HOSTNAME
@@ -63,6 +71,8 @@ spec:
           volumeMounts:
             - name: mail
               mountPath: /var/mail
+            - name: dovecot-config
+              mountPath: /etc/dovecot/conf.d
             - name: cert
               mountPath: /etc/ssl/private/mail.deuill.org
               readOnly: true
@@ -70,6 +80,9 @@ spec:
         - name: mail
           hostPath:
             path: /opt/kubernetes/mail/shared
+        - name: dovecot-config
+          configMap:
+            name: dovecot
         - name: cert
           secret:
             secretName: mail-deuill-org-certificate
