@@ -4,10 +4,12 @@
 addgroup --system znc
 adduser --system --ingroup znc --home "$ZNC_DATA_DIR" znc
 
-# Synchronize configuration file.
-mkdir -p "$ZNC_DATA_DIR/configs"
-envsubst '$ZNC_USER_NICKNAME $ZNC_USER_REALNAME $ZNC_USER_PASSWORD' \
-		 < /etc/znc/znc.conf.template > "$ZNC_DATA_DIR/configs/znc.conf"
+# Synchronize configuration file if none exists.
+if [ ! -e "$ZNC_DATA_DIR/configs/znc.conf" ]; then
+	mkdir -p "$ZNC_DATA_DIR/configs"
+	envsubst '$ZNC_USER_NICKNAME $ZNC_USER_REALNAME $ZNC_USER_PASSWORD' \
+			< /etc/znc/znc.conf.template > "$ZNC_DATA_DIR/configs/znc.conf"
+fi
 
 # Synchronize certficate.
 cat "/etc/ssl/private/$ZNC_HOSTNAME/tls.key" >  "$ZNC_DATA_DIR/znc.pem"
