@@ -55,9 +55,13 @@ modules_enabled = {
 	"ping"; -- Replies to XMPP pings with pongs
 	"register"; -- Allow users to register on this server using a client and change passwords
 	"mam"; -- Store messages in an archive and allow users to access it
+	"smacks"; -- Stream management for resuming dropped connections.
+	"csi"; -- Chat state information.
+	"filter_chatstates"; -- Don't send chat state notifications when client is inactive.
+	"throttle_presence"; -- Don't send presence informatio when client is inactive.
 
 	-- Admin interfaces
-	-- "admin_adhoc"; -- Allows administration via an XMPP client that supports ad-hoc commands
+	--"admin_adhoc"; -- Allows administration via an XMPP client that supports ad-hoc commands
 	--"admin_telnet"; -- Opens telnet console interface on localhost port 5582
 
 	-- HTTP modules
@@ -74,7 +78,7 @@ modules_enabled = {
 	--"watchregistrations"; -- Alert admins of registrations
 	--"motd"; -- Send a message to users when they log in
 	--"legacyauth"; -- Legacy authentication. Only used by some old clients and bots.
-	--"proxy65"; -- Enables a file transfer proxy service which clients behind NAT can use
+	"proxy65"; -- Enables a file transfer proxy service which clients behind NAT can use
 }
 
 -- These modules are auto-loaded, but should you want
