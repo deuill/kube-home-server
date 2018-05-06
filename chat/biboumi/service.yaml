@@ -1,0 +1,36 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: biboumi
+  namespace: chat
+spec:
+  template:
+    metadata:
+      labels:
+        app: biboumi
+    spec:
+      containers:
+        - name: biboumi
+          image: docker.deuill.org/chat/biboumi:8.0
+          imagePullPolicy: Never
+          env:
+            - name: BIBOUMI_HOSTNAME
+              value: biboumi
+            - name: BIBOUMI_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: biboumi
+                  key: server-password
+            - name: BIBOUMI_XMPP_SERVER_IP
+              value: prosody.chat.svc.cluster.local
+            - name: BIBOUMI_IDENTD_PORT
+              value: "0"
+            - name: BIBOUMI_DATA_DIR
+              value: /var/lib/biboumi
+          volumeMounts:
+            - name: biboumi
+              mountPath: /var/lib/biboumi
+      volumes:
+        - name: biboumi
+          hostPath:
+            path: /opt/kubernetes/chat/biboumi

@@ -172,6 +172,9 @@ log = {{to = "console", levels = {min = "info"}}}
 -- Location of directory to find certificates in (relative to main config file):
 certificates = "certificates"
 
+-- Listen on all interfaces for component connections.
+component_interface = "0.0.0.0"
+
 ----------- Virtual hosts -----------
 -- You need to add a VirtualHost entry for each domain you wish Prosody to serve.
 -- Settings under each VirtualHost entry apply *only* to that host.

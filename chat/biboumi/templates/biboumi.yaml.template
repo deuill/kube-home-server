@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: biboumi
+  namespace: chat
+type: Opaque
+data:
+  server-password: $((secret-from-gpg) <<< "
+    -----BEGIN PGP MESSAGE-----
+
+    hQIMAzy6/E8lNkAOAQ/+IhRs1ucGkj+MoLlzmZSsVcpQ9oJ7zS13t2LD/URdXdPA
+    tiOqhcJ9xSV5cqzvGLMoBf4V8ImCkbfQOCl2rmZeH3hjplWU4/NXs+ZAyJ2Ov4qw
+    aS11qpl/G8rTmVjd7C0OM0FlRcAEOvIXgeJbAgWC9iLExpl78BQx5BiJ6fUcr+Gs
+    q6PoPFirkUPpS/e7NBe6HRVjv/XUq5HHVBZgu/Ees3nXlmk6c19EvQr72Y6CuCno
+    iPTkCHZrv5Q7nZKjdBbHmhKv+WNUH6IWOUXZ2ojXxX/NYc8pg8fEwJbUrfTRvD6Z
+    Gf9qp4pjpmn+LVopgdM3VBppuGtOYOKpr+qFUZNI2gc4FvASZYgFhWJH4hFDz1Ww
+    0uSpyBA1g7C7/KhERVXSARdFzRaDyLi8vRmCqc4SXP5gVuT4JAm0xYrxIWYMUqGV
+    8Y2WAT4uS6rJIEnAt8+vPYLLYu/lxBWslbfHH5pY3XxA7a9TmJi586mIQlqaz5Jh
+    z2vn0HJZ3JPmXtd9jom2/ps3U7bzumPnz1h2X5GZcMA0O/DSQtR9xNudW4HNlnKG
+    Qhzd5Fk5hgfOnpL6URinGRQP2AxtmfaaIchvFtEnjMJ7HjJgt9LjdUaR9/FTyrO3
+    rvGahr0O8d7W+kGOPZX8tO3ooXQQCwFGP9EcSyZTJEO+Pkr9NEMWPbZlj4prBdTS
+    nwEG6HqBaQPlQAH/KvpGan7E2ABp2i/RAUvxmSjRO7k+mXeYufrL3Hs/BPKeJL9G
+    TO7ZqK299qkqA4GdV7Py00tNFj1uKojD9DLnAPJNM46N+H23aXTtmwiTyhF3Ml57
+    NUqfjy1Cyxxeg4rW33lc09Ct4dHorq8jm4jb8FIHw4dMoTYirTUaiHPQJdhQB71c
+    oqe/5S4veAvMHNHpTPj3Bw==
+    =mruf
+    -----END PGP MESSAGE-----")

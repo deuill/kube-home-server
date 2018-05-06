@@ -38,6 +38,9 @@ data:
         mode     = "client",
         protocol = "tlsv1_2"
     }
+  biboumi.cfg.lua: |
+    Component "biboumi"
+    component_secret = os.getenv("BIBOUMI_PASSWORD") or ""
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -70,6 +73,11 @@ spec:
               value: dovecot.mail.svc.cluster.local
             - name: IMAP_AUTH_PORT
               value: "993"
+            - name: BIBOUMI_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: biboumi
+                  key: server-password
           ports:
             - containerPort: 5222
             - containerPort: 5269

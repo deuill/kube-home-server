@@ -1,0 +1,6 @@
+hostname=${BIBOUMI_HOSTNAME}
+password=${BIBOUMI_PASSWORD}
+xmpp_server_ip=${BIBOUMI_XMPP_SERVER_IP}
+db_name=${BIBOUMI_DATA_DIR}/biboumi.sqlite
+log_level=1
+persistent_by_default=true
