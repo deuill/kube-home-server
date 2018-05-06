@@ -39,12 +39,12 @@ $(IMAGES): % : .build/%.t
 
 $(DEFINITIONS): % : .build/%.t
 	@echo "Building definition for $(BOLD)$(@)$(RESET)..."; \
-	kubectl apply -f $@; \
+	sudo kubectl apply -f $@; \
 	mkdir -p .build/$(@D) && touch -r $@ $<
 
 $(TEMPLATES): % : .build/%.t
 	@echo "Building definition from template $(BOLD)$(@)$(RESET)..."; \
-	bash -c 'bash <(printf "source $(TEMPLATE_ENV) && cat << __MAKE__\n$$(cat $@)\n__MAKE__\n")' | kubectl apply -f - && \
+	bash -c 'bash <(printf "source $(TEMPLATE_ENV) && cat << __MAKE__\n$$(cat $@)\n__MAKE__\n")' | sudo kubectl apply -f - && \
 	mkdir -p .build/$(@D) && touch -r $@ $<
 
 # ----------------
