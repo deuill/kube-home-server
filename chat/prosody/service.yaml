@@ -14,9 +14,21 @@ spec:
     - name: s2s
       port: 5269
       nodePort: 5269
-    - name: xmpp
+    - name: component
       port: 5347
       nodePort: 5347
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prosody-http
+  namespace: chat
+spec:
+  selector:
+    app: prosody
+  ports:
+    - name: http
+      port: 5280
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -26,21 +38,33 @@ metadata:
 data:
   deuill.org.cfg.lua: |
     VirtualHost "deuill.org"
+      certificate = "/etc/ssl/private/deuill.org/tls.crt"
 
-    certificate = "/etc/ssl/private/deuill.org/tls.crt"
+      authentication = "imap"
+      imap_auth_host = os.getenv("IMAP_AUTH_HOST") or "localhost"
+      imap_auth_port = os.getenv("IMAP_AUTH_PORT") or 993
 
-    authentication = "imap"
-    imap_auth_host = os.getenv("IMAP_AUTH_HOST") or "localhost"
-    imap_auth_port = os.getenv("IMAP_AUTH_PORT") or 993
+      auth_append_host = true
+      auth_imap_ssl = {
+          mode = "client",
+          protocol = "tlsv1_2"
+      }
 
-    auth_append_host = true
-    auth_imap_ssl = {
-        mode     = "client",
-        protocol = "tlsv1_2"
-    }
+    Component "chat.deuill.org" "muc"
+      certificate = "/etc/ssl/private/chat.deuill.org/tls.crt"
+      modules_enabled = {"mam_muc"}
+
+      name = "The deuill.org chatroom server"
+      restrict_room_creation = "local"
+      max_history_messages = 100
+    Component "chat.deuill.org" "http_upload"
+      http_external_url = "https://chat.deuill.org/"
+      http_upload_expire_after = 60 * 60 * 24 * 7
+      http_upload_file_size_limit = 1024 * 1024 * 8
+      http_upload_quota = 1024 * 1024 * 1024
   biboumi.cfg.lua: |
     Component "biboumi"
-    component_secret = os.getenv("BIBOUMI_PASSWORD") or ""
+      component_secret = os.getenv("BIBOUMI_PASSWORD") or ""
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -55,7 +79,7 @@ spec:
     spec:
       containers:
         - name: prosody
-          image: docker.deuill.org/chat/prosody:0.10.0
+          image: docker.deuill.org/chat/prosody:0.10.1
           imagePullPolicy: Never
           env:
             - name: DATABASE_HOST
@@ -81,14 +105,18 @@ spec:
           ports:
             - containerPort: 5222
             - containerPort: 5269
+            - containerPort: 5280
             - containerPort: 5347
           volumeMounts:
             - name: prosody-data
               mountPath: /var/lib/prosody
             - name: prosody-config
               mountPath: /etc/prosody/conf.d
-            - name: cert
+            - name: deuill-org-cert
               mountPath: /etc/ssl/private/deuill.org
+              readOnly: true
+            - name: chat-deuill-org-cert
+              mountPath: /etc/ssl/private/chat.deuill.org
               readOnly: true
       volumes:
         - name: prosody-data
@@ -97,6 +125,9 @@ spec:
         - name: prosody-config
           configMap:
             name: prosody
-        - name: cert
+        - name: deuill-org-cert
           secret:
             secretName: deuill-org-certificate
+        - name: chat-deuill-org-cert
+          secret:
+            secretName: chat-deuill-org-certificate

@@ -28,7 +28,7 @@ use_libevent = true
 -- Prosody will always look in its source directory for modules, but
 -- this option allows you to specify additional locations where Prosody
 -- will look for modules first. For community modules, see https://modules.prosody.im/
-plugin_paths = {"/prosody-modules"}
+plugin_paths = {"/usr/lib/prosody/community-modules"}
 
 -- This is the list of modules Prosody will load on startup.
 -- It looks for mod_modulename.lua in the plugins folder, so make sure that exists too.
@@ -59,6 +59,7 @@ modules_enabled = {
 	"csi"; -- Chat state information.
 	"filter_chatstates"; -- Don't send chat state notifications when client is inactive.
 	"throttle_presence"; -- Don't send presence informatio when client is inactive.
+	"cloud_notify"; -- Support for push notifications.
 
 	-- Admin interfaces
 	--"admin_adhoc"; -- Allows administration via an XMPP client that supports ad-hoc commands
@@ -67,7 +68,7 @@ modules_enabled = {
 	-- HTTP modules
 	--"bosh"; -- Enable BOSH clients, aka "Jabber over HTTP"
 	--"websocket"; -- XMPP over WebSockets
-	--"http_files"; -- Serve static files from a directory over HTTP
+	-- "http_files"; -- Serve static files from a directory over HTTP
 
 	-- Other specific functionality
 	--"limits"; -- Enable bandwidth limiting for XMPP connections
