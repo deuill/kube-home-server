@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: biboumi
-          image: docker.deuill.org/chat/biboumi:8.0
+          image: docker.deuill.org/chat/biboumi:8.3
           imagePullPolicy: Never
           env:
             - name: BIBOUMI_HOSTNAME
