@@ -1,5 +1,5 @@
 FROM debian:stable-slim
-ARG VERSION=0.10.1
+ARG VERSION=0.10.2
 
 RUN apt-get update -y && apt-get upgrade -y && \
     apt-get install -y --no-install-recommends curl mercurial gnupg ca-certificates apt-transport-https

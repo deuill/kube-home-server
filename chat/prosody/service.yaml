@@ -79,7 +79,7 @@ spec:
     spec:
       containers:
         - name: prosody
-          image: docker.deuill.org/chat/prosody:0.10.1
+          image: docker.deuill.org/chat/prosody:0.10.2
           imagePullPolicy: Never
           env:
             - name: DATABASE_HOST

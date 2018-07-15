@@ -161,7 +161,7 @@ archive_expires_after = "1w" -- Remove archived messages after 1 week
 
 -- Logging configuration
 -- For advanced logging see https://prosody.im/doc/logging
-log = {{to = "console", levels = {min = "info"}}}
+log = {{to = "console", levels = {min = "info"}, timestamps = true}}
 
 -- Uncomment to enable statistics
 -- For more info see https://prosody.im/doc/statistics
