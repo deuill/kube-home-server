@@ -38,6 +38,8 @@ metadata:
 data:
   deuill.org.cfg.lua: |
     VirtualHost "deuill.org"
+      http_host = "chat.deuill.org"
+      http_external_url = "https://chat.deuill.org/"
       certificate = "/etc/ssl/private/deuill.org/tls.crt"
 
       authentication = "imap"
@@ -49,12 +51,12 @@ data:
           mode = "client",
           protocol = "tlsv1_2"
       }
-
     Component "chat.deuill.org" "muc"
-      certificate = "/etc/ssl/private/chat.deuill.org/tls.crt"
-      modules_enabled = {"mam_muc"}
+      modules_enabled = {"muc_mam", "vcard_muc"}
 
       name = "The deuill.org chatroom server"
+      certificate = "/etc/ssl/private/chat.deuill.org/tls.crt"
+
       restrict_room_creation = "local"
       max_history_messages = 100
     Component "chat.deuill.org" "http_upload"
@@ -79,7 +81,7 @@ spec:
     spec:
       containers:
         - name: prosody
-          image: docker.deuill.org/chat/prosody:0.10.2
+          image: docker.deuill.org/chat/prosody:0.11.5
           imagePullPolicy: Never
           env:
             - name: DATABASE_HOST

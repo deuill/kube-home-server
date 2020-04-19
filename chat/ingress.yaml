@@ -4,10 +4,9 @@ metadata:
   name: ingress
   namespace: chat
   annotations:
-    certmanager.k8s.io/cluster-issuer: letsencrypt
-    certmanager.k8s.io/acme-challenge-type: dns01
-    certmanager.k8s.io/acme-dns01-provider: cloudflare-dns
+    cert-manager.io/cluster-issuer: letsencrypt
     nginx.ingress.kubernetes.io/proxy-body-size: 8M
+    nginx.org/websocket-services: prosody-websocket
 spec:
   tls:
     - secretName: chat-deuill-org-certificate
@@ -18,6 +17,10 @@ spec:
       http:
         paths:
           - path: /
+            backend:
+              serviceName: prosody-http
+              servicePort: 5280
+          - path: /xmpp-websocket
             backend:
               serviceName: prosody-http
               servicePort: 5280

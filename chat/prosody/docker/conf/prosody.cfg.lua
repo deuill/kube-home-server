@@ -46,7 +46,8 @@ modules_enabled = {
 	"pep"; -- Enables users to publish their mood, activity, playing music and more
 	"private"; -- Private XML storage (for room bookmarks, etc.)
 	"blocklist"; -- Allow users to block communications with other users
-	"vcard"; -- Allow users to set vCards
+	"vcard4"; -- Allow users to set vCards in v4 format.
+	"vcard_legacy"; -- Allow users to set vCards in legacy formats.
 
 	-- Nice to have
 	"version"; -- Replies to server version requests
@@ -57,8 +58,9 @@ modules_enabled = {
 	"mam"; -- Store messages in an archive and allow users to access it
 	"smacks"; -- Stream management for resuming dropped connections.
 	"csi"; -- Chat state information.
+	--"csi_simple"; -- Enables simple traffic optimisation for clients that have reported themselves as inactive.
 	"filter_chatstates"; -- Don't send chat state notifications when client is inactive.
-	"throttle_presence"; -- Don't send presence informatio when client is inactive.
+	"throttle_presence"; -- Don't send presence information when client is inactive.
 	"cloud_notify"; -- Support for push notifications.
 
 	-- Admin interfaces
@@ -67,7 +69,7 @@ modules_enabled = {
 
 	-- HTTP modules
 	--"bosh"; -- Enable BOSH clients, aka "Jabber over HTTP"
-	--"websocket"; -- XMPP over WebSockets
+	"websocket"; -- XMPP over WebSockets
 	-- "http_files"; -- Serve static files from a directory over HTTP
 
 	-- Other specific functionality
@@ -80,6 +82,9 @@ modules_enabled = {
 	--"motd"; -- Send a message to users when they log in
 	--"legacyauth"; -- Legacy authentication. Only used by some old clients and bots.
 	"proxy65"; -- Enables a file transfer proxy service which clients behind NAT can use
+	"conversejs"; -- Web-based frontend for XMPP
+	"bookmarks"; -- Next-generation group-chat bookmarks
+	"turncredentials"; -- Connect to TURN/STUN server.
 }
 
 -- These modules are auto-loaded, but should you want
@@ -120,6 +125,9 @@ s2s_secure_auth = false
 -- Even if you leave s2s_secure_auth disabled, you can still require valid
 -- certificates for some domains by specifying a list here.
 --s2s_secure_domains = { "jabber.org" }
+
+-- WebSockets configuration
+consider_websocket_secure = true
 
 -- Select the authentication backend to use. The 'internal' providers
 -- use Prosody's configured data storage to store the authentication data.
@@ -162,6 +170,15 @@ archive_expires_after = "1w" -- Remove archived messages after 1 week
 -- Logging configuration
 -- For advanced logging see https://prosody.im/doc/logging
 log = {{to = "console", levels = {min = "info"}, timestamps = true}}
+
+-- Configuration for Converse.js
+conversejs_options = {
+	view_mode = "fullscreen";
+}
+
+-- Configuration for TURN/STUN.
+turncredentials_host   = os.getenv("TURN_HOST") or "localhost"
+turncredentials_secret = os.getenv("TURN_SECRET") or ""
 
 -- Uncomment to enable statistics
 -- For more info see https://prosody.im/doc/statistics
