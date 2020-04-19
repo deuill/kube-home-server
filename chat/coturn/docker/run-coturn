@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Prepare configuration files for environment variable substitution.
+ENV_NAMES="`env | awk -F '=' '{printf "$%s ", $1}'`"
+for file in /etc/coturn/*.template; do
+	envsubst "${ENV_NAMES}" < "$file" > "`echo $file | awk -F '.template$' '{print $1}'`"
+done
+
+# Add user to `ssl-cert` group.
+if getent group ssl-cert >/dev/null ; then
+	adduser --quiet turnserver ssl-cert
+fi
+
+sudo -u turnserver /usr/bin/turnserver -c /etc/coturn/turnserver.conf

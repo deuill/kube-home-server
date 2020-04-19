@@ -104,6 +104,13 @@ spec:
                 secretKeyRef:
                   name: biboumi
                   key: server-password
+            - name: TURN_HOST
+              value: chat.deuill.org
+            - name: TURN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: coturn
+                  key: static-secret
           ports:
             - containerPort: 5222
             - containerPort: 5269

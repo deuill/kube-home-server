@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: coturn
+  namespace: chat
+type: Opaque
+data:
+  static-secret: $((secret-from-gpg) <<< "
+    -----BEGIN PGP MESSAGE-----
+
+    hQIMAzy6/E8lNkAOARAAmBx1Onmqf8ID1mT5ztFgFJe7cZU9I4ea0tJ7ayb5v9nH
+    GQomYOwt/UnLotek5WGxJWiHchcaMDtaHNiln14W+6gs3wH+doimCwbs5cufBu3Y
+    DghC8LjuC2T9aBc6q/KKte3wTGo59IMZ65DwxYuWYhs9mePIjXb0dpAZtLXaD2iP
+    f0/2LQ7xMxfXo/0hnPVvWf1xAqfxLpzxfvGCA8yc1TFA7Ctmr75ecbeZf2qIULwG
+    efxL2XK1roMJ/Zu/rhG5tI7j+fDFzp5zOPiNtImV46m4jZcIYX/OAm0sgrHiCPPt
+    PFBGNjMJeWVZWqPTSwDLB/HW/TM9jrhV/ENl34jiDbpojUkqQeTbDTK/vlPsH4+l
+    AQFGiIOZB12YL0hszqhpt++i1Y0YUd/4dQmGD6NaUcutFR0WmkhdLQ3UnlTFrM/s
+    itQ0fbNl2kCe/bmk0ou0l/DWYfjKc7A2gAd2akLnS8ZobB2ZFY08NtJsln3X8XoS
+    syGNBtgaydj/i4PoH0GTPd0AW9gQa29WBzbWEoQEUw9C+Y5Gsn/oWHECCZjpGV7t
+    5C+JgpwXCy5cZyU51pmOMiIw/RwYkBGs9HPkQuvSAjXDzC1BglVXF6LXu+Kny/ur
+    /RBiKoe//CYlhPJxsqLw8/GJchkAaIZcXddzywATH9BknqPRVa/N/3jYUcDRF5bS
+    bQEqZ3k1osZMRuWpAZG0qyuQ6ON3l59JbWoplJUJEcE/jQLxxf4ZRBIO53TDoM7/
+    tsVXmgki2XQeIlB2lSRjtyiKM/iECYYXOUWRSI0swD7A9tu142TPSadkqe4JHVqY
+    Jf/eY1nUUxPFaw8j/mY=
+    =qibs
+    -----END PGP MESSAGE-----")
