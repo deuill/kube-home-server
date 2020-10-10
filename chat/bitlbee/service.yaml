@@ -10,12 +10,15 @@ spec:
     - name: bitlbee
       port: 6667
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: bitlbee
   namespace: chat
 spec:
+  selector:
+    matchLabels:
+      app: bitlbee
   template:
     metadata:
       labels:

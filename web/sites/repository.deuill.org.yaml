@@ -30,12 +30,15 @@ data:
       include conf/basic.conf;
     }
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: repository-deuill-org
   namespace: web
 spec:
+  selector:
+    matchLabels:
+      app: repository-deuill-org
   template:
     metadata:
       labels:
@@ -43,7 +46,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: docker.deuill.org/web/nginx:1.12.2
+          image: docker.deuill.org/web/nginx:1.17
           imagePullPolicy: Never
           ports:
             - containerPort: 80

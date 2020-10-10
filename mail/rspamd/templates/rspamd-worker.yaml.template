@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rspamd-worker
+  namespace: mail
+type: Opaque
+data:
+  controller-password: $((secret-from-gpg) <<< "
+    -----BEGIN PGP MESSAGE-----
+
+    hQIMAzy6/E8lNkAOARAAhLPbttF4AEntPcrE+RcKp+w6TWhbL4PqkfgJ65kxItDZ
+    PfEwIDQYjF8deHWW3HNgq2fQPJx1FEyDeFk/Cv0V1TDBRyAsVfSA0uTAYrG6NeiB
+    9/Tk7IaTdKZRK1LN0JrzOfXcxL39RGUFMFHE5FTVK80AAhZ7UhAYn3dSo1qccZPZ
+    w5TLCmsxzbvpR9qHJ3ATw4g5/clfwrEKSsfM1Uog62rbt4E78XY/8FfATqvnxrs6
+    il5RlcqDSMBUDHSp9lqnjuIFO74dBEvZD5Cc22BKFGaMq9l06iYN5+GzB49FgP5X
+    u2KUUSTDMfGCXMSQmbM4PKIpmr0M9uccFgM7w+FGtG0LH/goVRPzX06IBrIXUDPm
+    j6UxQ1Ob7ErsmrqBWjIBUmF/248jC2coagx7k/D1SLnTePPCuM5h7eBEL+uNy7yU
+    MhJpsGFg9PZ4vKixid8w7aBf7T0zyjA1DV5nrZ6JvTJjCvyhJ4BEoxrw5dofRpaJ
+    2xGvf0q8l1LQxJh5HulTDEed3pi4BzZidDH7h7HboXP9kLe0yYruj4HilVh8c9Bs
+    2XwA/tKmLZrYr5GqJ+nPPRTZOCtCMO5njg6SmbyCACWjxJItZdCwEoltsJRhEAIa
+    1eLsnvXG12FgprQUOPz8Y8cUausX+KCC/umBZGDfL1wgQhRrU82udr+Kbb7d6yLS
+    bQGW5xIYU3Hg0fXaHpKLlmHiUlP6WqzIXzOcUhKW001QlX5cIJf0+kInPRdpw5M9
+    G1vL2CVtfppgXfe5tXMC05M8fhrkpw0K+4gnTtuwyHZxkqRRfMvLCFyfeX9lbcAC
+    AgkqjJmqFYksKbWCvbg=
+    =c/QO
+    -----END PGP MESSAGE-----")

@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: local-mail
+  namespace: web
+type: Opaque
+data:
+  username: $((secret-from-gpg "username") <<< "
+    -----BEGIN PGP MESSAGE-----
+
+    hQIMAzy6/E8lNkAOARAAkStXY+xz7EMzzH6mdagjvR8KhJroYvJdFqEPV7K9SwOY
+    OnkZacU1yin6PC1YnbrbReTZ7Tg4A8MIsQYmsUZ6kGlxiMHyE2t6RwGgmN/bk1yn
+    TSI7/imWkQOq/1X9d7UFstUvn3A0eIjdGA1JL8k1VW1FiiEDrwUrjNFNzcP4r8b5
+    P6ga8NQpWyysN+mB5ajm+pC4gIW/w0cBMfp6rT+6uWtmvX8L9Ts2s+GalTHwMQUB
+    iZfpGpd5gjo8GCFcqB0pxx8DKN7zoNNPmU6ewXp1a6K52OSc9WJ3JBSVXvy1Dz+k
+    1QM8LEZD8RBs+htBgfi7iSeZvkn4wBkiVehHZG0uutkhUu27UyC0+b5w2Ph5nfv7
+    Bahr+1hn2x7dtNWs3c63S8Oie3BW8I1S0zfpBqpU3OJNHt1o6d9bUyebgvcBGSiY
+    B4zjReV7QLUTI1Zm+WSrlD08qoY++EQyx+yknv4f+Q+slIInlojttAfTLvMa+WuR
+    x20nBDgbQsgwQSh/Ty0djGjhoEPEakHR85igPkui1VeSwV8rfUwETFn18QbIOI55
+    qq18bJA7kCVmAGPLeXRLzkbeeBFTLe9UOu0d2jD8iv44W9lStawyHPSpTp+KlOYi
+    O+Rg7+0BhK6yj7KpU2tfSfu54Jgvm0skj/Yh+eu/lLGWZ7AqCWsxpKh6BptZjETS
+    RwGXHqyiAx98mDJ9rSKZPBuxJyDQUUfnITVcMwzGc8oL5QYuegXOlOHDk9M2nZ9I
+    Na9NpRVoBNCMRwC3iJTNpXgAMZuDVROW
+    =69EI
+    -----END PGP MESSAGE-----")
+  password: $((secret-from-gpg "password") <<< "
+    -----BEGIN PGP MESSAGE-----
+
+    hQIMAzy6/E8lNkAOAQ//fU1GLJ+WNWl2fn0nZ+/WdexitRE513s/Edjk7eG7GM+x
+    a+CihJ1YeqFGREQYgKx7u8linEdvlPwWm/JWtI7jq4b7rPcABbFNDI9p8cSSUlox
+    c0n/WIuWUTOy9O655deJgIGiKGQ80Xmrc2spEQfn/k/ZQ26QIHagCZeusCL4D9Dj
+    qmCuh114TgDD8cwxRqpyKNCNfwsyL4Ij8pKfNwjdO2q1rC9lO7GGQtMzOyi4xAIN
+    /GLNC9MvYfpZRF3wK5F/GXYTLB8k90xpqWG3gUY9dtkfx2PInw85WQy07zE5Hmxk
+    RoiCYEQvJG7NH0Bwhc3aSMwS6bmVoxaZbzfT8ciNWRTcmBvoYbJ+Chw396hEy24s
+    d4VO5YJdsD6lXY4emkWndfKULNcneZxqsOeTv/lvHZhVO/hidibAzyYZamU9kcAy
+    5Ri830NmBJLPkp+jWQ9TaPg/bwE7gL/X0HYZ7Yrvo/NjHavG7X9ewXdo/7m2CduX
+    GOMGbEL2wXgmOPEB/TwXU2t+ZMzAUTmtQslg75j31crcWGNrIk0oC23vw1Rw4uDo
+    dgBp112vGFBHnR+0mfIA6CIN/S3KOS8oyP0WIDkjqDzT/oRxlUhxWowKFxUN2UG8
+    xl59YiRKBp9Slt7AyJbKtmOzXjIHVfWwR0kVmFRz8STF3qathzTdBhvIFj/wFLzS
+    nwFcqZ0d4dYF9uFWFupsxvtcWoUUSlcP4OM0bYEEGu1qvi1x16X0tIqJEPkhAmvM
+    CCx4zTGzZKj4WXi3roO6y6VCXyvQwtMqHF9znhlsHA5X6Kr85xr1IRqdsL/AFseD
+    Us/+6EaWjbOgSKhQklh57eRDwfE2d1pFreSdAnGJzsefLaZ/14yC8yHKcOrfuYzw
+    17SEXoNzqJnDaa2U5qgyxA==
+    =xzWD
+    -----END PGP MESSAGE-----")

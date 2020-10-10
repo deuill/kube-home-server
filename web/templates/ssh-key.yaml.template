@@ -5,28 +5,8 @@ metadata:
   namespace: web
 type: Opaque
 data:
-  known_hosts: $((secret-from-gpg) <<< "
-    -----BEGIN PGP MESSAGE-----
-    Version: GnuPG v2
-
-    hQIMAzy6/E8lNkAOAQ/+P+2FZYklZqPWcLB/gI38imnlSeZMJDnr3f7sat2u9qb9
-    635ulGT72dTNKUtxKP+zZ6upUvswcQp6kNSxmk1xJ1YjRIgk+WjCLhAGnR/vFxXk
-    KyhsE5V1X0TEHuxRfPIDmVOLFgOzZTC0OeRmskFrJowNLuRnsPdY17OUx/VL2WD0
-    PmFf1VQjoTUvL/9EqHb6WMK0/jjAvTzqGoSNaTR0JMElSXo8jmAy2Jj3VzEjOFU9
-    5Mgj3ah++A1nLaNw1TnKyzs9d5iGdN6EV+AtOjNzJHCig/BaBSTyr55iLZgWFxTM
-    3JHObo8Nr9FP2KQG1iOHSZUaUEfkYKe864hBQOzpSG9t5so9Y9P8pnJw/SZ5GW8q
-    zhGSYcWwAvDCxuQUX36ZcuIgn7f+7mqMzTTHwtDPhAwYhy9TnlevQPWOMmjYo9Ri
-    lfHQvRJ4k/dc8l6/frKdaLqrrWjcCB2v3vXMCJ7D0Lm7fpwu9zlAoEOFSa/2/thB
-    9Lxcjia7gWLDY5Ul1WKMjgK7y7BNJ8ZN25dlBpm4M0d4dHjkB7y+sSjo1qHfG4+G
-    Z0LZcpjukZEMRuIK4LQPasBzg1E+AYdah6oxbih5TufCujdpJgJRP1pf8/xWpefJ
-    wAynCRpQ0BBUhnxBANVUVvMIvOXTqGORZVrhWogrQi9M2TDyoEO8dkHbfMBetD7S
-    wCoBtqgC6cHfY3JwTIOPKjUfJtpJ3SRDlK8EPX5OKjwYBtK1YFFwu2gPxOx/ZA7Q
-    OAIIOjorODf9Y94Tm0PbSXdu7nFSbFBwWv0lE896wDzUD5hzGIGsAjPame7UYyPi
-    2jyx0+Ku5UJ3Fao1LvNeIUBVWBGcM5NeAmkqJeQ3A7ZclNTmHPHcbHXMHg7b2GyJ
-    ds6jyS05KafMp2yG0+BUASSFSE2gQKLsLeeeFCcQ8Tzese2PvpNpvRgHmMpG7XrZ
-    2WQeSKyK0HrWfKQwYm0gEAaihrdydkk0OToW+8T1nPWlpQDfg1j9QF7YBuw=
-    =81wa
-    -----END PGP MESSAGE-----")
+  known_hosts: $((secret-from-string) <<< "
+    git-server.default.svc.cluster.local ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHoL2tF4bFGTDhpkL0MwGzyauBqAFhWkO8eGWzdXhnih0rdda+KWfpBzU6/LBO2ctmLiyVEmRotU9KJguUJT3eo=")
   id_rsa.pub: $((secret-from-gpg) <<< "
     -----BEGIN PGP MESSAGE-----
     Version: GnuPG v2

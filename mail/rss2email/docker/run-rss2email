@@ -1,0 +1,6 @@
+#!/bin/sh
+
+mkdir -p /etc/rss2email
+envsubst < /usr/share/rss2email/config/config.template > /etc/rss2email/config.conf
+
+/usr/local/bin/r2e --config /etc/rss2email/config.conf --data /var/lib/rss2email/data/json run

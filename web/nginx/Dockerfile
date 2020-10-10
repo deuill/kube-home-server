@@ -1,5 +1,5 @@
-FROM nginx:1.14.0
-ARG VERSION=1.14.0
+FROM nginx:1.17
+ARG VERSION=1.17
 
 RUN apt-get update -y && apt-get upgrade -y
 

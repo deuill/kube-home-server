@@ -62,18 +62,28 @@ data:
     Component "chat.deuill.org" "http_upload"
       http_external_url = "https://chat.deuill.org/"
       http_upload_expire_after = 60 * 60 * 24 * 7
-      http_upload_file_size_limit = 1024 * 1024 * 8
+      http_upload_file_size_limit = 1024 * 1024 * 32
       http_upload_quota = 1024 * 1024 * 1024
   biboumi.cfg.lua: |
     Component "biboumi"
       component_secret = os.getenv("BIBOUMI_PASSWORD") or ""
+  spectrum.cfg.lua: |
+    Component "spectrum-skype"
+      component_secret = os.getenv("SPECTRUM_PASSWORD") or ""
+    Component "spectrum-discord"
+      component_secret = os.getenv("SPECTRUM_PASSWORD") or ""
+    Component "spectrum-slack"
+      component_secret = os.getenv("SPECTRUM_PASSWORD") or ""
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: prosody
   namespace: chat
 spec:
+  selector:
+    matchLabels:
+      app: prosody
   template:
     metadata:
       labels:
@@ -81,7 +91,7 @@ spec:
     spec:
       containers:
         - name: prosody
-          image: docker.deuill.org/chat/prosody:0.11.5
+          image: docker.deuill.org/chat/prosody:0.11.7
           imagePullPolicy: Never
           env:
             - name: DATABASE_HOST
@@ -104,8 +114,13 @@ spec:
                 secretKeyRef:
                   name: biboumi
                   key: server-password
+            - name: SPECTRUM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: spectrum
+                  key: server-password
             - name: TURN_HOST
-              value: chat.deuill.org
+              value: turn.deuill.org
             - name: TURN_SECRET
               valueFrom:
                 secretKeyRef:

@@ -4,9 +4,8 @@ metadata:
   name: ingress
   namespace: web
   annotations:
-    certmanager.k8s.io/cluster-issuer: letsencrypt
-    certmanager.k8s.io/acme-challenge-type: dns01
-    certmanager.k8s.io/acme-dns01-provider: cloudflare-dns
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/proxy-body-size: 8M
 spec:
   tls:
     - secretName: deuill-org-certificate
@@ -15,6 +14,9 @@ spec:
     - secretName: repository-deuill-org-certificate
       hosts:
         - repository.deuill.org
+    - secretName: grawkit-deuill-org-certificate
+      hosts:
+        - grawkit.deuill.org
   rules:
     - host: deuill.org
       http:
@@ -29,4 +31,11 @@ spec:
           - path: /
             backend:
               serviceName: repository-deuill-org
+              servicePort: 80
+    - host: grawkit.deuill.org
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: grawkit-deuill-org
               servicePort: 80

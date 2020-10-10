@@ -5,7 +5,7 @@ metadata:
   namespace: chat
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-    nginx.ingress.kubernetes.io/proxy-body-size: 8M
+    nginx.ingress.kubernetes.io/proxy-body-size: 32M
     nginx.org/websocket-services: prosody-websocket
 spec:
   tls:

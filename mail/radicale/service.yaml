@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: radicale
+  namespace: mail
+spec:
+  selector:
+    app: radicale
+  ports:
+    - name: http
+      port: 5232
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radicale
+  namespace: mail
+spec:
+  selector:
+    matchLabels:
+      app: radicale
+  template:
+    metadata:
+      labels:
+        app: radicale
+    spec:
+      containers:
+        - name: radicale
+          image: docker.deuill.org/mail/radicale:3.0.3
+          imagePullPolicy: Never
+          env:
+            - name: IMAP_AUTH_HOST
+              value: mail.deuill.org
+            - name: IMAP_AUTH_PORT
+              value: "143"
+          ports:
+            - containerPort: 5232
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/radicale
+      volumes:
+        - name: data
+          hostPath:
+            path: /opt/kubernetes/mail/radicale

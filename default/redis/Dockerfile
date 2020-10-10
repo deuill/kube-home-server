@@ -1,7 +1,8 @@
-FROM redis:4.0-alpine
+FROM redis:5.0
+ARG VERSION=5.0
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/latest-stable/main" >> /etc/apk/repositories && \
-    apk upgrade --no-cache --update
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends
 
 EXPOSE 6379
 CMD ["redis-server"]

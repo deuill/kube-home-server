@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Create required user and group.
+addgroup --system spectrum
+adduser --system --ingroup spectrum --home /var/lib/spectrum2 spectrum
+
+# Prepare configuration files for environment variable substitution.
+ENV_NAMES="`env | awk -F '=' '{printf "$%s ", $1}'`"
+for file in /etc/spectrum2/*.template; do
+	envsubst "${ENV_NAMES}" < "$file" > "`echo $file | awk -F '.template$' '{print $1}'`"
+done
+
+chown -R spectrum:spectrum /var/lib/spectrum2
+/usr/bin/spectrum2 -n /etc/spectrum2/spectrum.cfg

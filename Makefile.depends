@@ -55,5 +55,21 @@ mail/postfix/service.yaml: | \
 	default/mariadb/service.yaml \
 	mail/dovecot/service.yaml \
 	mail/rspamd/service.yaml \
-	mail/postfix/templates/mail-database.yaml.template \
-	mail/postfix/certificates/mail.deuill.org.yaml
+	mail/shared/certificates/mail.deuill.org.yaml \
+	mail/shared/templates/mail-database.yaml.template
+
+# Chat-related dependencies.
+chat/biboumi/service.yaml: | \
+	chat/biboumi/Dockerfile \
+	chat/namespace.yaml \
+	chat/biboumi/templates/biboumi.yaml.template
+
+chat/prosody/service.yaml: | \
+	chat/prosody/Dockerfile \
+	chat/namespace.yaml \
+	chat/ingress.yaml \
+	default/mariadb/service.yaml \
+	chat/biboumi/service.yaml \
+	chat/prosody/templates/prosody-database.yaml.template \
+	chat/shared/certificates/chat.deuill.org.yaml \
+	chat/shared/certificates/deuill.org.yaml

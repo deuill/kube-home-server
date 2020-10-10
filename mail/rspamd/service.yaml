@@ -9,13 +9,18 @@ spec:
   ports:
     - name: milter
       port: 11332
+    - name: controller
+      port: 11334
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: rspamd
   namespace: mail
 spec:
+  selector:
+    matchLabels:
+      app: rspamd
   template:
     metadata:
       labels:
@@ -26,8 +31,14 @@ spec:
         fsGroup: 101
       containers:
         - name: rspamd
-          image: docker.deuill.org/mail/rspamd:1.7.3
+          image: docker.deuill.org/mail/rspamd:2.5
           imagePullPolicy: Never
+          env:
+            - name: RSPAMD_CONTROLLER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rspamd-worker
+                  key: controller-password
           ports:
             - containerPort: 11332
             - containerPort: 11333

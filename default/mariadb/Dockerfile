@@ -1,4 +1,5 @@
-FROM mariadb:10.2
+FROM mariadb:10.4
+ARG VERSION=10.4
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends

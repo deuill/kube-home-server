@@ -34,7 +34,7 @@ help:
 $(IMAGES): % : .build/%.t
 	@version=`awk -F'=' '/ARG VERSION/ {print $$2; exit}' $@`; \
 	echo "Building Docker image for $(BOLD)$(@D):$$version$(RESET)..."; \
-	sudo docker build -t $(DOCKER_REGISTRY)/$(@D):$$version $(@D) && \
+	sudo docker build $(if $(nocache),--no-cache) -t $(DOCKER_REGISTRY)/$(@D):$$version $(@D) && \
 	mkdir -p .build/$(@D) && touch -r $@ $<
 
 $(DEFINITIONS): % : .build/%.t

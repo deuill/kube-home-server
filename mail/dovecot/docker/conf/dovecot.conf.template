@@ -16,6 +16,7 @@ mail_gid = 5000
 
 # Simplify log messages.
 login_log_format_elements = user=<%u> method=%m rip=%r lip=%l mpid=%e %c
+mail_log_prefix = "%s(%u)<%{pid}>: "
 
 # ----------------------
 # Mailbox configuration.
@@ -64,6 +65,19 @@ ssl = yes
 ssl_cert = </etc/ssl/private/${MAIL_HOSTNAME}/tls.crt
 ssl_key = </etc/ssl/private/${MAIL_HOSTNAME}/tls.key
 
+protocol lmtp {
+	mail_plugins = $mail_plugins sieve
+}
+
+service lmtp {
+	user = virtual
+	group = virtual
+
+	inet_listener lmtp {
+		port = 24
+	}
+}
+
 protocol imap {
 	mail_max_userip_connections = 25
 }
@@ -105,7 +119,8 @@ service auth {
 
 # Enable SQL authentication.
 userdb {
-	driver = prefetch
+	driver = sql
+	args = /etc/dovecot/dovecot-sql.conf.local
 }
 
 passdb {

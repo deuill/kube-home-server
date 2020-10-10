@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: nextcloud-database
+  namespace: web
+type: Opaque
+data:
+  password: $((secret-from-gpg) <<< "
+    -----BEGIN PGP MESSAGE-----
+
+    hQIMAzy6/E8lNkAOAQ//TPj6g75dTlHNZox4zivaa2DryzS8yTEbYLuVCysjm04p
+    Tpxlpv1qnz1np0eh6yhYjpYHiItYxKoyRU31EFk6yo+sabLaih/Gw+w6qraYY6vG
+    7uIro+JAJgzh12aBIp5dPyp5Rw/MeEjaKHoBYVy9DynSNHg3H/2PDk3h/9cM36LL
+    U/yWzOihsNNlzXJxo36Bmle8hkjescHSJO8SOmbDRLB/yne+uS5KtFoj0uV1llNI
+    Bl4+GQVcixPNjvCdrylH5hPlHGYwpueOcFPmYSfrxps0R2ksi3veUJiy+dfK9Hw4
+    LNOfx6AxPuYhQz3pTjrmLjgXTCy6lC1KgJHKMZ/9D1+x5wy/dtNiuASBPoMazB+G
+    IToG4XA0xgWybuGx+U20DN6TISVXoCxdvE6VTgUwMtHCn7hUXG3i2gr3m7/T2JMe
+    7rixWrbBef9EdlA4tfTVUq6jXML2IA1tvRAZC6gZbPP0SwVuyzcpCzljF/mzwKYC
+    KEZW66xm/lyNhyuqduliJpkpTiSHqW2KVcWSruNsXnw0qTeBZKbEZj9ZoljU4Jq2
+    ay5jmAuhXiNJlTDCYXMEINISa8jlDIywht2wkfOAWSgOQmc7wuGJzls0HGBCHzYn
+    xu+0NrYUqO5+b8RruNWUIIJvc+BU0x2e6v4CdCMTKR1qfrprctp4r4JiY35xWy/S
+    dQGS4kEz5Uw8Gz3zqLnwyspPW3aD3BWvHavTdIOkROHGJHEJ6i/ulCyBrqmE8vRQ
+    2JR4Akn6GG0TbPAey+ONbXBOk9eCuivLoACubTUF5c8sWUECD+v90ZX7AEN9lBXE
+    xp4ha/U7hcVeGIx+576cBpRd3FjTlA==
+    =jaPk
+    -----END PGP MESSAGE-----")

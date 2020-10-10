@@ -95,6 +95,9 @@ disable_vrfy_command = yes
 alias_maps = hash:/etc/postfix/aliases
 alias_database = hash:/etc/postfix/aliases
 
+# Virtual mailbox transport. Defaults to 'virtual'.
+virtual_transport = ${MAIL_TRANSPORT_PATH}
+
 # This specifies where the virtual mailbox folders will be located.
 virtual_mailbox_base = /var/mail/virtual
 

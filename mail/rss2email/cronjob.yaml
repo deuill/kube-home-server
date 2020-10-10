@@ -1,0 +1,96 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rss2email
+  namespace: mail
+data:
+  config.template: |
+    [DEFAULT]
+    from = rss@deuill.org
+    to = alex@deuill.org
+    user-agent = rss2email/1.0
+    date-header = True
+    html-mail = True
+    post-process = rss2email.post_process.prettify process
+    email-protocol = smtp
+    smtp-auth = True
+    smtp-username = ${MAIL_SMTP_USERNAME}
+    smtp-password = ${MAIL_SMTP_PASSWORD}
+    smtp-server = mail.deuill.org
+    smtp-port = 465
+    smtp-ssl = False
+    verbose = info
+
+    [feed.The-Digital-Antiquarian]
+    url = https://www.filfre.net/feed/
+
+    [feed.Emily-Short]
+    url = https://emshort.blog/feed/
+
+    [feed.A-Collection-of-Unmitigated-Pedantry]
+    url = https://acoup.blog/feed/
+
+    [feed.Planet-GNOME]
+    url = https://planet.gnome.org/atom.xml
+
+    [feed.weinholt.se]
+    url = https://weinholt.se/feed.xml
+
+    [feed.Still-Drinking]
+    url = https://www.stilldrinking.org/rss/feed.xml
+
+    [feed.Inform-7]
+    url = http://inform7.com/feed.xml
+
+    [feed.Drew-DeVault]
+    url = https://drewdevault.com/feed.xml
+
+    [feed.Pine64]
+    url = https://pine64.org/feed
+
+    [feed.Wandering-Thoughts]
+    url = https://utcc.utoronto.ca/~cks/space/blog/?atom
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: rss2email
+  namespace: mail
+spec:
+  schedule: "0 * * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: rss2email
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: rss2email
+              image: docker.deuill.org/mail/rss2email:v3.12.1
+              imagePullPolicy: Never
+              env:
+                - name: MAIL_SMTP_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: local-mail
+                      key: username
+                - name: MAIL_SMTP_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: local-mail
+                      key: password
+              volumeMounts:
+                - name: data
+                  mountPath: /var/lib/rss2email
+                - name: config
+                  mountPath: /usr/share/rss2email/config
+          volumes:
+            - name: data
+              hostPath:
+                path: /opt/kubernetes/default/rss2email
+            - name: config
+              configMap:
+                name: rss2email

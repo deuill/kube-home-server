@@ -18,12 +18,15 @@ spec:
       port: 587
       nodePort: 587
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postfix
   namespace: mail
 spec:
+  selector:
+    matchLabels:
+      app: postfix
   template:
     metadata:
       labels:
@@ -31,7 +34,7 @@ spec:
     spec:
       containers:
         - name: postfix
-          image: docker.deuill.org/mail/postfix:3.1.8
+          image: docker.deuill.org/mail/postfix:3.4.14
           imagePullPolicy: Never
           env:
             - name: MAIL_HOSTNAME
@@ -40,6 +43,8 @@ spec:
               value: inet:dovecot-sasl.mail.svc.cluster.local:3659
             - name: MAIL_MILTER_PATH
               value: inet:rspamd.mail.svc.cluster.local:11332
+            - name: MAIL_TRANSPORT_PATH
+              value: lmtp:inet:dovecot-lmtp.mail.svc.cluster.local:24
             - name: DATABASE_HOST
               value: mariadb.default.svc.cluster.local
             - name: DATABASE_USER

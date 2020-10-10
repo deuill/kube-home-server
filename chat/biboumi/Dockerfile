@@ -1,5 +1,5 @@
 FROM debian:stable-slim
-ARG VERSION=8.3
+ARG VERSION=8.5
 
 ENV BUILD_DEPS="build-essential git cmake python"
 RUN apt-get update -y && apt-get upgrade -y && \

@@ -1,4 +1,3 @@
-#!/bin/sh
+#!/bin/bash
 # Run hugo and expand environment variables.
-hugo `eval echo $@`
-exit 0
+/usr/local/bin/hugo --source=${HUGO_SOURCE:-/source} --destination=${HUGO_DESTINATION:-/dest} --debug

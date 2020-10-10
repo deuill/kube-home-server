@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spectrum-skype
+  namespace: chat
+spec:
+  selector:
+    matchLabels:
+      app: spectrum-skype
+  template:
+    metadata:
+      labels:
+        app: spectrum-skype
+    spec:
+      containers:
+        - name: spectrum
+          image: docker.deuill.org/chat/spectrum:2.0.13
+          imagePullPolicy: Never
+          env:
+            - name: SPECTRUM_HOSTNAME
+              value: spectrum-skype
+            - name: SPECTRUM_PROTOCOL
+              value: prpl-skypeweb
+            - name: SPECTRUM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: spectrum
+                  key: server-password
+            - name: SPECTRUM_XMPP_SERVER_HOST
+              value: prosody.chat.svc.cluster.local
+            - name: SPECTRUM_DATA_DIR
+              value: /var/lib/spectrum2
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/spectrum2
+      volumes:
+        - name: data
+          hostPath:
+            path: /opt/kubernetes/chat/spectrum
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spectrum-discord
+  namespace: chat
+spec:
+  selector:
+    matchLabels:
+      app: spectrum-discord
+  template:
+    metadata:
+      labels:
+        app: spectrum-discord
+    spec:
+      containers:
+        - name: spectrum
+          image: docker.deuill.org/chat/spectrum:2.0.13
+          imagePullPolicy: Never
+          env:
+            - name: SPECTRUM_HOSTNAME
+              value: spectrum-discord
+            - name: SPECTRUM_PROTOCOL
+              value: prpl-eionrobb-discord
+            - name: SPECTRUM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: spectrum
+                  key: server-password
+            - name: SPECTRUM_XMPP_SERVER_HOST
+              value: prosody.chat.svc.cluster.local
+            - name: SPECTRUM_DATA_DIR
+              value: /var/lib/spectrum2
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/spectrum2
+      volumes:
+        - name: data
+          hostPath:
+            path: /opt/kubernetes/chat/spectrum
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spectrum-slack
+  namespace: chat
+spec:
+  selector:
+    matchLabels:
+      app: spectrum-slack
+  template:
+    metadata:
+      labels:
+        app: spectrum-slack
+    spec:
+      containers:
+        - name: spectrum
+          image: docker.deuill.org/chat/spectrum:2.0.13
+          imagePullPolicy: Never
+          env:
+            - name: SPECTRUM_HOSTNAME
+              value: spectrum-slack
+            - name: SPECTRUM_PROTOCOL
+              value: prpl-slack
+            - name: SPECTRUM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: spectrum
+                  key: server-password
+            - name: SPECTRUM_XMPP_SERVER_HOST
+              value: prosody.chat.svc.cluster.local
+            - name: SPECTRUM_DATA_DIR
+              value: /var/lib/spectrum2
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/spectrum2
+      volumes:
+        - name: data
+          hostPath:
+            path: /opt/kubernetes/chat/spectrum

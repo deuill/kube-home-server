@@ -1,15 +1,19 @@
-#!/bin/sh
+#!/bin/bash
 
 # Prepare configuration files for environment variable substitution.
-ENV_NAMES="`env | awk -F '=' '{printf "$%s ", $1}'`"
+ENV_NAMES="$(env | awk -F '=' '{printf "$%s ", $1}')"
 for file in /etc/dovecot/*.template; do
-	envsubst "${ENV_NAMES}" < "$file" > "`echo $file | awk -F '.template$' '{print $1}'`"
+	envsubst "$ENV_NAMES" < "$file" > "$(echo $file | awk -F '.template$' '{print $1}')"
 done
 
+# Prepare other configuration.
+mkdir -p /var/lib/dovecot/{script,sieve}
+install -m 0755 /etc/dovecot/conf.d/*.script /var/lib/dovecot/script
+install -m 0644 /etc/dovecot/conf.d/*.sieve /var/lib/dovecot/sieve
+
 # Compile Sieve scripts.
-for file in /var/lib/dovecot/sieve/*.sieve; do
-	sievec "$file"
-done
+find /etc/dovecot/sieve.* -name '*.sieve' | xargs -I@ sievec @
+find /var/lib/dovecot/sieve -name '*.sieve' | xargs -I@ sievec @
 
 # Create required user and group.
 addgroup --system --gid 5000 virtual

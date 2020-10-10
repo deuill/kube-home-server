@@ -1,5 +1,5 @@
 FROM debian:stable
-ARG VERSION=3.1.8
+ARG VERSION=3.4.14
 
 RUN apt-get update -y && apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \

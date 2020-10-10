@@ -1,17 +1,14 @@
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: deuill-org
   namespace: chat
 spec:
   secretName: deuill-org-certificate
+  dnsNames:
+    - deuill.org
   issuerRef:
-    name: letsencrypt
+    group: cert-manager.io
     kind: ClusterIssuer
-  commonName: deuill.org
-  acme:
-    config:
-      - dns01:
-          provider: cloudflare-dns
-        domains:
-          - deuill.org
+    name: letsencrypt
+

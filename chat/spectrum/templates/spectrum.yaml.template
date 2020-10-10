@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: spectrum
+  namespace: chat
+type: Opaque
+data:
+  server-password: $((secret-from-gpg) <<< "
+    -----BEGIN PGP MESSAGE-----
+
+    hQIMAzy6/E8lNkAOARAAnNDEhsH1aDcGgbZ72WB77GfR8KkCGT77HVmZwPx9jy0t
+    PH3tgggg8KCUIfZSU58LWBjvgcOVt/i0MSV+q29ZMDwZXdVE5p8Lxqmv4z+S/3+S
+    z5u7PEHV4CG5pOjJZCcNlkeuadjFUIa0fDLgwTe+DqYp34DQHiNea+w6GAwFRo3b
+    IZGfWniSl4m8crrc+LRNTxOaZN/ZueS/iC6GkeV6xEsMmeqP3W4L4MyBF0VqVdSm
+    Hdk2S0KcCkv8PIBPwmeF0pWC8SRXiIuVNRjwoj5lMoGrgTQlx00X9V/LTVSOMyJH
+    BXVBKZ7MPmbht3pBXY1zG5ZGSsXyQe9Xruo2Fc5duEneanXFDGa2rWt6OOEfZswv
+    h7RoB/mCL/JMOVJTjM/ZBFBbmK7hHSGu8kJFvq8UDi+Z5FGa2XJTqjI1qwaCODQQ
+    RFt2Sl3CXdBJL9Umi/m9kvedsg7mcOBcjPYnayoLUSUVKuhXcH/2yznYcZPs0uc1
+    UDZbRODTjTO1xkwAltTy0gQ3VhMUxbu195dJHpehyrF3pc3kpqzRhJGwgfX0JZES
+    6ZaTnTdpPNyUeqhTQTaJ7Pl42pVcB4U8wrQHJbty82rbo+OaP7q1cuanl8sxqj7M
+    MKplCdaqYMp41RRCNz+DIHoC5qcmhyw8TKfFK6SL41Jbg+dLspe6B+cqfiKuPR3S
+    bQGsX0zOrBsXqEJGMTYgYDUVm7JR0LDEYsyI8qbLgPhXq/pRdK/0/jufWL0pU3sQ
+    4iGOpvYezzheFJ2UxKNKsHsQlzWCZG6GwCAQrGK3dfABi7LvK2+mAt6fiyldtE9D
+    nsY2sVfXgzSTmLN/65Y=
+    =HNW8
+    -----END PGP MESSAGE-----")

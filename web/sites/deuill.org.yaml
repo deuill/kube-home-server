@@ -35,12 +35,15 @@ data:
       include conf/site/generic.conf;
     }
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deuill-org
   namespace: web
 spec:
+  selector:
+    matchLabels:
+      app: deuill-org
   template:
     metadata:
       labels:
@@ -48,13 +51,13 @@ spec:
     spec:
       initContainers:
         - name: git
-          image: docker.deuill.org/default/git-fetch:1.0.0
+          image: docker.deuill.org/default/git-fetch:1.1.0
           imagePullPolicy: Never
           env:
             - name: GIT_REPOSITORY
               value: git@git-server.default.svc.cluster.local:deuill/deuill.org.git
             - name: GIT_REVISION
-              value: 4bd9e0fe08c8a456e7a18e83dce6e6c1524e505d
+              value: 2017-09-02
             - name: GIT_ROOT
               value: /git/deuill
           volumeMounts:
@@ -63,31 +66,33 @@ spec:
             - name: deuill-org-source
               mountPath: /git
         - name: hugo
-          image: docker.deuill.org/default/hugo:0.39
+          image: docker.deuill.org/default/hugo:0.54.0
           imagePullPolicy: Never
           env:
             - name: HUGO_SOURCE
-              value: /hugo/source/deuill
+              value: /source/deuill
+            - name: HUGO_DESTINATION
+              value: /dest
           volumeMounts:
             - name: deuill-org-source
-              mountPath: /hugo/source
-            - name: deuill-org-build
-              mountPath: /hugo/build
+              mountPath: /source
+            - name: deuill-org-dest
+              mountPath: /dest
       containers:
         - name: nginx
-          image: docker.deuill.org/web/nginx:1.12.2
+          image: docker.deuill.org/web/nginx:1.17
           imagePullPolicy: Never
           ports:
             - containerPort: 80
           volumeMounts:
-            - name: deuill-org-build
+            - name: deuill-org-dest
               mountPath: /srv/http/deuill
             - name: deuill-org-config
               mountPath: /etc/nginx/sites-enabled
       volumes:
         - name: deuill-org-source
           emptyDir: {}
-        - name: deuill-org-build
+        - name: deuill-org-dest
           emptyDir: {}
         - name: deuill-org-config
           configMap:

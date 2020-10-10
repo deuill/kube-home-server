@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: mail
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/proxy-body-size: 8M
+spec:
+  tls:
+    - secretName: dav-deuill-org-certificate
+      hosts:
+        - dav.deuill.org
+  rules:
+    - host: dav.deuill.org
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: radicale
+              servicePort: 5232

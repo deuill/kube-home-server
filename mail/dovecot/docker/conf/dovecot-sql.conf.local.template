@@ -4,3 +4,4 @@ connect = "host=${DATABASE_HOST} dbname=${DATABASE_NAME} user=${DATABASE_USER} p
 
 default_pass_scheme = SHA512-CRYPT
 password_query = SELECT username AS user, password, CONCAT(home, '/', maildir) AS userdb_home, uid AS userdb_uid, gid AS userdb_gid FROM users WHERE username = '%u'
+user_query = SELECT CONCAT(home, '/', maildir) AS home, uid, gid, CONCAT('maildir:', home, '/', maildir) AS mail FROM users WHERE username = '%u'

@@ -1,10 +1,11 @@
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
   name: letsencrypt
+  namespace: cert-manager
 spec:
   acme:
-    server: https://acme-v01.api.letsencrypt.org/directory
+    server: https://acme-v02.api.letsencrypt.org/directory
     email: $(string-from-gpg <<< "
       -----BEGIN PGP MESSAGE-----
 
@@ -25,28 +26,28 @@ spec:
       -----END PGP MESSAGE-----")
     privateKeySecretRef:
       name: letsencrypt
-    dns01:
-      providers:
-      - name: cloudflare-dns
-        cloudflare:
-          email: $(string-from-gpg <<< "
-            -----BEGIN PGP MESSAGE-----
+    solvers:
+      - selector: {}
+        dns01:
+          cloudflare:
+            email: $(string-from-gpg <<< "
+              -----BEGIN PGP MESSAGE-----
 
-            hQIMAzy6/E8lNkAOARAA0Cx7CD1SGdjz3CNjBHCJw4Jig1Q3SYV5+/SiU68cbUCC
-            F2tZ2YSvCHW5WreW5LsGJ1X1jQIGTmNRzXiFggzGeUz1yHcJG17TkyzyDm/BggRx
-            Q2Kx+82uzUVTSPGZUWKOVU5JKHYgMQgNrDriGAOS/oE08XSQYUWDExwGdVCljILS
-            rrJawlo7DJA47MiZ5okyKyMdHfizfPlxv+vOpxNEcDkBTomjwT79JbWXVhCN9Fip
-            aHid/gJ8vC1J3WO5ubOWYSnGokCcMRTH1gbWnwC7TcsFFancnNN/K7AF2mSVwKd7
-            gD4WJ0xWJcqzBIX2GLPFLf1UtJOe+2J2ZlSygyC9RVqf00TB1VbcEx2oglq16MIB
-            cxxFtOfcQ/jlVt5cbvjtOyjCIoWh2CoEz24IEi1URDOFOsTAvVwAIM2xejPiYxak
-            /wkavERncWxWzeU0yNePzprOoEKO/vxAo1ktIWmO2HuvAPQ92Tf82EgreQBNjNSv
-            QWqPZZ2t6cF36DYBW1ksTE209cXjbuwv4Et9N8buRSlotB8pl29rnJqtqC5oneHm
-            2SdG6Fvasgsj/IgZ0lferVw5S9kIppBro1iNAg9HYi0Ql5skdiKbxRQp122G4vOT
-            z7LATnI+B6UJ46bwqD7QQcaHXlME+9oNOarvcOpIJ/TA6uwqyLYv6UmbxT7el3nS
-            SgFvMPHI4InetDIUv5c5JLQI6fboKAxG3GfdarlMQbjnkXQEKmWSW6k8uwNeZf49
-            gxBeJ8lnus920OWAgLGfEsM8tzdsjctWkRVj
-            =t5rl
-            -----END PGP MESSAGE-----")
-          apiKeySecretRef:
-            name: cloudflare-api
-            key: key
+              hQIMAzy6/E8lNkAOARAA0Cx7CD1SGdjz3CNjBHCJw4Jig1Q3SYV5+/SiU68cbUCC
+              F2tZ2YSvCHW5WreW5LsGJ1X1jQIGTmNRzXiFggzGeUz1yHcJG17TkyzyDm/BggRx
+              Q2Kx+82uzUVTSPGZUWKOVU5JKHYgMQgNrDriGAOS/oE08XSQYUWDExwGdVCljILS
+              rrJawlo7DJA47MiZ5okyKyMdHfizfPlxv+vOpxNEcDkBTomjwT79JbWXVhCN9Fip
+              aHid/gJ8vC1J3WO5ubOWYSnGokCcMRTH1gbWnwC7TcsFFancnNN/K7AF2mSVwKd7
+              gD4WJ0xWJcqzBIX2GLPFLf1UtJOe+2J2ZlSygyC9RVqf00TB1VbcEx2oglq16MIB
+              cxxFtOfcQ/jlVt5cbvjtOyjCIoWh2CoEz24IEi1URDOFOsTAvVwAIM2xejPiYxak
+              /wkavERncWxWzeU0yNePzprOoEKO/vxAo1ktIWmO2HuvAPQ92Tf82EgreQBNjNSv
+              QWqPZZ2t6cF36DYBW1ksTE209cXjbuwv4Et9N8buRSlotB8pl29rnJqtqC5oneHm
+              2SdG6Fvasgsj/IgZ0lferVw5S9kIppBro1iNAg9HYi0Ql5skdiKbxRQp122G4vOT
+              z7LATnI+B6UJ46bwqD7QQcaHXlME+9oNOarvcOpIJ/TA6uwqyLYv6UmbxT7el3nS
+              SgFvMPHI4InetDIUv5c5JLQI6fboKAxG3GfdarlMQbjnkXQEKmWSW6k8uwNeZf49
+              gxBeJ8lnus920OWAgLGfEsM8tzdsjctWkRVj
+              =t5rl
+              -----END PGP MESSAGE-----")
+            apiKeySecretRef:
+              name: cloudflare-api
+              key: key

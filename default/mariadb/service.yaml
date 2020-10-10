@@ -9,11 +9,14 @@ spec:
     - name: tcp
       port: 3306
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mariadb
 spec:
+  selector:
+    matchLabels:
+      app: mariadb
   template:
     metadata:
       labels:
@@ -21,7 +24,7 @@ spec:
     spec:
       containers:
         - name: mariadb
-          image: docker.deuill.org/default/mariadb
+          image: docker.deuill.org/default/mariadb:10.4
           imagePullPolicy: Never
           env:
             - name: MYSQL_ROOT_PASSWORD

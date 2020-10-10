@@ -9,11 +9,14 @@ spec:
     - name: command
       port: 6379
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis
 spec:
+  selector:
+    matchLabels:
+      app: redis
   template:
     metadata:
       labels:
@@ -21,7 +24,7 @@ spec:
     spec:
       containers:
         - name: redis
-          image: docker.deuill.org/default/redis
+          image: docker.deuill.org/default/redis:5.0
           imagePullPolicy: Never
           ports:
             - containerPort: 6379

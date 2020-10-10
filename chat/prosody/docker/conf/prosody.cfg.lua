@@ -58,7 +58,7 @@ modules_enabled = {
 	"mam"; -- Store messages in an archive and allow users to access it
 	"smacks"; -- Stream management for resuming dropped connections.
 	"csi"; -- Chat state information.
-	--"csi_simple"; -- Enables simple traffic optimisation for clients that have reported themselves as inactive.
+	"csi_simple"; -- Enables simple traffic optimisation for clients that have reported themselves as inactive.
 	"filter_chatstates"; -- Don't send chat state notifications when client is inactive.
 	"throttle_presence"; -- Don't send presence information when client is inactive.
 	"cloud_notify"; -- Support for push notifications.
